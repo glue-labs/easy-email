@@ -157,7 +157,7 @@ export function footerPanel(props: any) {
                         return (
                           <TextField
                             label={attribute.label}
-                            name={`${focusIdx}${attribute.path}${attribute.properties.path}.content`}
+                            name={`${focusIdx}${attribute.path}${props.path}.content`}
                           />
                         );
                       })}
