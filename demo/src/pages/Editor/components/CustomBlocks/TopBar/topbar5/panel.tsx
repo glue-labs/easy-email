@@ -144,9 +144,6 @@ export function topBar5Panel(props: any) {
                       style={{ width: '100%' }}
                     >
                       {attribute.properties[0].value.map((props: any, index: number) => {
-
-                        console.log("contzwfwevweendsft", (focusIdx),(attribute.path),(attribute.properties[0].path),
-                        (index),(props.content));
                         if (props.content === 'Home') {
                           return (
                             <Grid.Row>

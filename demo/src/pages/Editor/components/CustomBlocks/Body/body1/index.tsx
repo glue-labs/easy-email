@@ -49,7 +49,7 @@ export const Body1 = createCustomBlock<IBody>({
       },
       children: [
         {
-          type: 'text',
+          type: BasicType.TEXT,
           data: {
             value: {
               content: 'We Serve Healthy &amp; Delicious Foods',
