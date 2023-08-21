@@ -7,7 +7,7 @@ import React from 'react';
 export function footerPanel(props: any) {
   const { focusIdx } = useFocusIdx();
 
-  const topBar5AttributeJson = [
+  const footerAttributeJson = [
     {
       components: [
         {
@@ -110,7 +110,7 @@ export function footerPanel(props: any) {
     <AttributesPanelWrapper style={{ padding: '20px' }}>
       <Stack vertical>
         {
-          topBar5AttributeJson[0].components.map((attribute: any, index: number) => {
+          footerAttributeJson[0].components.map((attribute: any, index: number) => {
 
             if (attribute.label === 'Footer Block') {
               return (

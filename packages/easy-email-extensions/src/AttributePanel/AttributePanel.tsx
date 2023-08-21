@@ -34,8 +34,6 @@ export function AttributePanel() {
    Com = focusBlock && BlockAttributeConfigurationManager.get(focusBlock.type);
   }
 
-
-
   const shadowRoot = getShadowRoot();
 
   if (!initialized) return null;

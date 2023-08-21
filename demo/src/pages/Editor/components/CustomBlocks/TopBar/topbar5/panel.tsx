@@ -160,7 +160,6 @@ export function topBar5Panel(props: any) {
                                 <TextField
                                   label={t('url')}
                                   name={`${focusIdx}${attribute.path}${attribute.properties[0].path}.[${index}].href`}
-
                                 />
                               </Grid.Col>
                             </Grid.Row>
