@@ -77,17 +77,17 @@ export function ConfigurationPanel({
             </FullHeightOverlayScrollbars>
           </Tabs.TabPane> */}
 
-          {/* <Tabs.TabPane
+          <Tabs.TabPane
             destroyOnHide
             key='Source code'
             title={
-              <div style={{ height: 40, lineHeight: '40px' }}>{t('Source code')}</div>
+              <div style={{ height: 40, lineHeight: '40px' }}>{t('Flow Chart')}</div>
             }
           >
             <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
               <SourceCodePanel jsonReadOnly={jsonReadOnly} mjmlReadOnly={mjmlReadOnly} />
             </FullHeightOverlayScrollbars>
-          </Tabs.TabPane> */}
+          </Tabs.TabPane>
         </Tabs>
       ) : (
         <AttributePanel />

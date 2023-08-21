@@ -113,13 +113,13 @@ export const StandardLayout: React.FC<ExtensionProps> = props => {
                   width: 350,
                 }}
               >
-                {/* <ConfigurationPanel
+                <ConfigurationPanel
                   compact={compact}
                   height={containerHeight}
                   showSourceCode={showSourceCode}
                   jsonReadOnly={jsonReadOnly}
                   mjmlReadOnly={mjmlReadOnly}
-                /> */}
+                />
               </Layout.Sider>
             ) : (
               <Layout.Sider style={{ width: 0, overflow: 'hidden' }} />
