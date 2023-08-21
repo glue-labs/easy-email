@@ -24,7 +24,6 @@ import mjml from 'mjml-browser';
 import { copy } from '@demo/utils/clipboard';
 import { useEmailModal } from './components/useEmailModal';
 import services from '@demo/services';
-import { IconMoonFill, IconSunFill } from '@arco-design/web-react/icon';
 import { Liquid } from 'liquidjs';
 import { saveAs } from 'file-saver';
 import {
@@ -55,9 +54,6 @@ import './components/CustomBlocks';
 
 import 'easy-email-editor/lib/style.css';
 import 'easy-email-extensions/lib/style.css';
-import blueTheme from '@arco-themes/react-easy-email-theme/css/arco.css?inline';
-import purpleTheme from '@arco-themes/react-easy-email-theme-purple/css/arco.css?inline';
-import greenTheme from '@arco-themes/react-easy-email-theme-green/css/arco.css?inline';
 import { testMergeTags } from './testMergeTags';
 import { useMergeTagsModal } from './components/useMergeTagsModal';
 
@@ -76,129 +72,58 @@ const defaultCategories: ExtensionProps['categories'] = [
     active: true,
     blocks: [
       {
-        type: AdvancedType.TEXT,
+        type: CustomBlocksType.TOPBAR_1,
+        category: 'Topbar',
+
       },
       {
-        type: AdvancedType.IMAGE,
-        payload: { attributes: { padding: '0px 0px 0px 0px' } },
+        type: CustomBlocksType.TOPBAR_2,
+        category: 'Topbar',
       },
       {
-        type: AdvancedType.BUTTON,
+        type: CustomBlocksType.TOPBAR_3,
+        category: 'Topbar',
       },
       {
-        type: AdvancedType.SOCIAL,
+        type: CustomBlocksType.TOPBAR_4,
+        category: 'Topbar',
       },
       {
-        type: AdvancedType.DIVIDER,
+        type: CustomBlocksType.TOPBAR_5,
+        category: 'Topbar',
       },
       {
-        type: AdvancedType.SPACER,
+        type: CustomBlocksType.TOPBAR_6,
+        category: 'Topbar',
+      },
+      {
+        type: CustomBlocksType.BODY_1,
+        category: 'Body',
+      },
+      {
+        type: CustomBlocksType.BODY_2,
+        category: 'Body',
+      },
+      {
+        type: CustomBlocksType.FOOTER_1,
+        category: 'Footer',
       },
       {
         type: AdvancedType.HERO,
-      },
-      {
-        type: AdvancedType.WRAPPER,
-      },
-    ],
-  },
-  {
-    label: 'Layout',
-    active: true,
-    displayType: 'column',
-    blocks: [
-      {
-        title: '2 columns',
-        payload: [
-          ['50%', '50%'],
-          ['33%', '67%'],
-          ['67%', '33%'],
-          ['25%', '75%'],
-          ['75%', '25%'],
-        ],
-      },
-      {
-        title: '3 columns',
-        payload: [
-          ['33.33%', '33.33%', '33.33%'],
-          ['25%', '25%', '50%'],
-          ['50%', '25%', '25%'],
-        ],
-      },
-      {
-        title: '4 columns',
-        payload: [['25%', '25%', '25%', '25%']],
-      },
-    ],
-  },
-  {
-    label: 'Custom',
-    active: true,
-    displayType: 'custom',
-    blocks: [
-      <BlockAvatarWrapper type={CustomBlocksType.PRODUCT_RECOMMENDATION}>
-        <div
-          style={{
-            position: 'relative',
-            border: '1px solid #ccc',
-            marginBottom: 20,
-            width: '80%',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-        >
-          <img
-            src={
-              'http://res.cloudinary.com/dwkp0e1yo/image/upload/v1665841389/ctbjtig27parugrztdhk.png'
-            }
-            style={{
-              maxWidth: '100%',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 2,
-            }}
-          />
-        </div>
-      </BlockAvatarWrapper>,
+        category: 'Footer',
+      }
     ],
   },
 ];
 
 const imageCompression = import('browser-image-compression');
 
-const fontList = [
-  'Arial',
-  'Tahoma',
-  'Verdana',
-  'Times New Roman',
-  'Courier New',
-  'Georgia',
-  'Lato',
-  'Montserrat',
-  '黑体',
-  '仿宋',
-  '楷体',
-  '标楷体',
-  '华文仿宋',
-  '华文楷体',
-  '宋体',
-  '微软雅黑',
-].map(item => ({ value: item, label: item }));
-
 export default function Editor() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [theme, setTheme] = useState<'blue' | 'green' | 'purple'>('blue');
+  // const [theme, setTheme] = useState<'blue' | 'green' | 'purple'>('blue');
   const dispatch = useDispatch();
   const history = useHistory();
   const templateData = useAppSelector('template');
-  const [locale, setLocale] = useState('en');
+  // const [locale, setLocale] = useState('en');
   const { addCollection, removeCollection, collectionCategory } = useCollection();
   const [visible, setVisible] = useState(false);
   const [text, setText] = useState('');
@@ -267,14 +192,6 @@ export default function Editor() {
     };
   }, [dispatch, id, userId]);
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.setAttribute('arco-theme', 'dark');
-    } else {
-      document.body.removeAttribute('arco-theme');
-    }
-  }, [isDarkMode]);
-
   const onUploadImage = async (blob: Blob) => {
     const compressionFile = await (
       await imageCompression
@@ -284,9 +201,9 @@ export default function Editor() {
     return services.common.uploadByQiniu(compressionFile);
   };
 
-  const onChangeTheme = useCallback(t => {
-    setTheme(t);
-  }, []);
+  // const   = useCallback(t => {
+  //   setTheme(t);
+  // }, []);
 
   const onChangeMergeTag = useCallback((path: string, val: any) => {
     setMergeTags(old => {
@@ -493,11 +410,11 @@ export default function Editor() {
     [],
   );
 
-  const themeStyleText = useMemo(() => {
-    if (theme === 'green') return greenTheme;
-    if (theme === 'purple') return purpleTheme;
-    return blueTheme;
-  }, [theme]);
+  // const themeStyleText = useMemo(() => {
+  //   if (theme === 'green') return greenTheme;
+  //   if (theme === 'purple') return purpleTheme;
+  //   return blueTheme;
+  // }, [theme]);
 
   if (!templateData && loading) {
     return (
@@ -512,7 +429,7 @@ export default function Editor() {
   return (
     <ConfigProvider locale={enUS}>
       <div>
-        <style>{themeStyleText}</style>
+        {/* <style>{themeStyleText}</style> */}
         <EmailEditorProvider
           key={id}
           height={'calc(100vh - 68px)'}
@@ -524,7 +441,6 @@ export default function Editor() {
           // onAddCollection={addCollection}
           // onRemoveCollection={({ id }) => removeCollection(id)}
           onUploadImage={onUploadImage}
-          fontList={fontList}
           onSubmit={onSubmit}
           onChangeMergeTag={onChangeMergeTag}
           autoComplete
@@ -535,7 +451,7 @@ export default function Editor() {
           mergeTagGenerate={tag => `{{${tag}}}`}
           onBeforePreview={onBeforePreview}
           socialIcons={[]}
-          locale={localesData[locale]}
+        // locale={localesData[locale]}
         >
           {({ values }, { submit, restart }) => {
             return (
@@ -543,26 +459,26 @@ export default function Editor() {
                 <PageHeader
                   style={{ background: 'var(--color-bg-2)' }}
                   backIcon
-                  title='Edit'
+                  title='Back'
                   onBack={() => history.push('/')}
                   extra={
                     <Stack alignment='center'>
-                      <Button
+                      {/* <Button
                         onClick={() => setIsDarkMode(v => !v)}
                         shape='circle'
                         type='text'
                         icon={isDarkMode ? <IconMoonFill /> : <IconSunFill />}
-                      ></Button>
+                      ></Button> */}
 
-                      <Select
+                      {/* <Select
                         onChange={onChangeTheme}
                         value={theme}
                       >
                         <Select.Option value='blue'>Blue</Select.Option>
                         <Select.Option value='green'>Green</Select.Option>
                         <Select.Option value='purple'>Purple</Select.Option>
-                      </Select>
-                      <Select
+                      </Select> */}
+                      {/* <Select
                         onChange={setLocale}
                         value={locale}
                       >
@@ -571,11 +487,11 @@ export default function Editor() {
                         <Select.Option value='zh-Hant'>中文繁體</Select.Option>
                         <Select.Option value='ja'>Japanese</Select.Option>
                         <Select.Option value='it'>Italian</Select.Option>
-                      </Select>
+                      </Select> */}
 
                       {/* <Button onClick={openMergeTagsModal}>Update mergeTags</Button> */}
 
-                      <Dropdown
+                      {/* <Dropdown
                         droplist={
                           <Menu>
                             <Menu.Item
@@ -597,9 +513,9 @@ export default function Editor() {
                         <Button>
                           <strong>Import</strong>
                         </Button>
-                      </Dropdown>
+                      </Dropdown> */}
 
-                      <Dropdown
+                      {/* <Dropdown
                         droplist={
                           <Menu>
                             <Menu.Item
@@ -635,8 +551,8 @@ export default function Editor() {
                       </Dropdown>
                       <Button onClick={() => setVisible(true)}>
                         <strong>Try responsive editor</strong>
-                      </Button>
-                      <a
+                      </Button> */}
+                      {/* <a
                         href='https://www.buymeacoffee.com/easyemail?utm_source=webside&utm_medium=button&utm_content=donate'
                         target='_blank'
                         onClick={ev => {
@@ -658,7 +574,7 @@ export default function Editor() {
                           src='https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png'
                           alt='Buy Me A Coffee'
                         />
-                      </a>
+                      </a> */}
                     </Stack>
                   }
                 />
