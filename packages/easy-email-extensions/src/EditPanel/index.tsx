@@ -7,6 +7,7 @@ import { FullHeightOverlayScrollbars } from '@extensions/components/FullHeightOv
 import styles from './index.module.scss';
 import { ConfigurationDrawer } from './ConfigurationDrawer';
 import { useExtensionProps } from '@extensions/components/Providers/ExtensionProvider';
+import { TemplatePanelUi } from '@extensions/components/TemplatePanelUi';
 
 const TabPane = Tabs.TabPane;
 
@@ -44,14 +45,14 @@ export function EditPanel({
       >
         <TabPane
           key='2'
-          title={t('Block')}
+          title={t('Data')}
         >
           <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
-            <Blocks />
+            <TemplatePanelUi></TemplatePanelUi>
           </FullHeightOverlayScrollbars>
         </TabPane>
 
-        <TabPane
+        {/* <TabPane
           key='1'
           title={t('Layer')}
         >
@@ -60,7 +61,7 @@ export function EditPanel({
               <BlockLayer />
             </div>
           </FullHeightOverlayScrollbars>
-        </TabPane>
+        </TabPane> */}
       </Tabs>
       {!compact && (
         <ConfigurationDrawer
