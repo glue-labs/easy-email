@@ -18,7 +18,7 @@ import {
 } from '@arco-design/web-react';
 import { useQuery } from '@demo/hooks/useQuery';
 import { useHistory } from 'react-router-dom';
-import { cloneDeep, set, isEqual } from 'lodash';
+import { cloneDeep, set, isEqual, uniqueId } from 'lodash';
 import { Loading } from '@demo/components/loading';
 import mjml from 'mjml-browser';
 import { copy } from '@demo/utils/clipboard';
@@ -33,6 +33,7 @@ import {
   EmailEditorProvider,
   EmailEditorProviderProps,
   IEmailTemplate,
+  ITempEmailTemplate,
 } from 'easy-email-editor';
 
 import { Stack } from '@demo/components/Stack';
@@ -67,6 +68,7 @@ import localesData from 'easy-email-localization/locales/locales.json';
 import { Uploader } from '@demo/utils/Uploader';
 import axios from 'axios';
 import enUS from '@arco-design/web-react/es/locale/en-US';
+import { v4 as uuidv4 } from 'uuid';
 
 console.log(localesData);
 
@@ -198,8 +200,9 @@ export default function Editor() {
     });
 
     pushEvent({ event: 'MJMLExport', payload: { values, mergeTags } });
-    navigator.clipboard.writeText(mjmlString);
-    saveAs(new Blob([mjmlString], { type: 'text/mjml' }), 'easy-email.mjml');
+    // navigator.clipboard.writeText(mjmlString);
+    return mjmlString;
+    // saveAs(new Blob([mjmlString], { type: 'text/mjml' }), 'easy-email.mjml');
   };
 
   const onExportJSON = (values: IEmailTemplate) => {
@@ -210,89 +213,11 @@ export default function Editor() {
     );
   };
 
-  // const onChangeTheme = useCallback(t => {
-  //   setTheme(t);
-  // }, []);
-
-  // const onChangeMergeTag = useCallback((path: string, val: any) => {
-  //   setMergeTags(old => {
-  //     const newObj = cloneDeep(old);
-  //     set(newObj, path, val);
-  //     return newObj;
-  //   });
-  // }, []);
-
-  // const onImportMJML = async ({
-  //   restart,
-  // }: {
-  //   restart: (val: IEmailTemplate) => void;
-  // }) => {
-  //   const uploader = new Uploader(() => Promise.resolve(''), {
-  //     accept: 'text/mjml',
-  //     limit: 1,
-  //   });
-
-  //   const [file] = await uploader.chooseFile();
-  //   const reader = new FileReader();
-  //   const pageData = await new Promise<[string, IEmailTemplate['content']]>(
-  //     (resolve, reject) => {
-  //       reader.onload = function (evt) {
-  //         if (!evt.target) {
-  //           reject();
-  //           return;
-  //         }
-  //         try {
-  //           const pageData = MjmlToJson(evt.target.result as any);
-  //           resolve([file.name, pageData]);
-  //         } catch (error) {
-  //           reject();
-  //         }
-  //       };
-  //       reader.readAsText(file);
-  //     },
-  //   );
-
-  //   restart({
-  //     subject: pageData[0],
-  //     content: pageData[1],
-  //     subTitle: '',
-  //   });
-  // };
-
-  // const onImportJSON = async ({
-  //   restart,
-  // }: {
-  //   restart: (val: IEmailTemplate) => void;
-  // }) => {
-  //   const uploader = new Uploader(() => Promise.resolve(''), {
-  //     accept: 'application/json',
-  //     limit: 1,
-  //   });
-
-  //   const [file] = await uploader.chooseFile();
-  //   const reader = new FileReader();
-  //   const emailTemplate = await new Promise<IEmailTemplate>((resolve, reject) => {
-  //     reader.onload = function (evt) {
-  //       if (!evt.target) {
-  //         reject();
-  //         return;
-  //       }
-  //       try {
-  //         const template = JSON.parse(evt.target.result as any) as IEmailTemplate;
-  //         resolve(template);
-  //       } catch (error) {
-  //         reject();
-  //       }
-  //     };
-  //     reader.readAsText(file);
-  //   });
-
-  //   restart({
-  //     subject: emailTemplate.subject,
-  //     content: emailTemplate.content,
-  //     subTitle: emailTemplate.subTitle,
-  //   });
-  // };
+  const saveMyTemplate = async (values: IEmailTemplate) => {
+    const val1 = onExportJSON(values);
+    console.log(val1);
+    const val2 = onExportMJML(values);
+  };
 
   const initialValues: IEmailTemplate | null = useMemo(() => {
     if (!templateData) return null;
@@ -337,6 +262,24 @@ export default function Editor() {
       subTitle: emailTemplate.subTitle,
     });
   };
+
+  const onSubmit = useCallback(async (
+    values: IEmailTemplate,
+  ) => {
+    const mjml = onExportMJML(values);
+    dispatch(
+      template.actions.create({
+        id: "a1408c3d-79d0-4e0b-961c-dbca8675d242",
+        template: values,
+        mjml,
+        success() {
+          Message.success('Saved success!');
+        },
+      }),
+    );
+    console.log("dispatched");
+  }, [dispatch, id, initialValues]
+  );
 
   const onBeforePreview: EmailEditorProviderProps['onBeforePreview'] = useCallback(
     (html: string, mergeTags) => {
@@ -406,7 +349,7 @@ export default function Editor() {
                       </Dropdown>&nbsp;&nbsp;
                       <Button key='JSON'
                         onClick={() => onImportJSON({ restart })}>Import Json</Button>&nbsp;&nbsp;
-                      <Button>save</Button>
+                      <Button onClick={() => onSubmit(values)}>save</Button>
 
                     </>
                   }

@@ -18,13 +18,13 @@ export function TemplatePanelUi(props: any) {
 
         />
         <TextField
-          label='Header Image'
-          name={`${focusIdx}.children[0].children[0].children[1].attributes.src`}
+          label='Company Address'
+          name={`${focusIdx}.children[2].children[0].children[1].data.value.content`}
           inline
 
         />
         <TextField
-          label='Footer'
+          label='Company Name'
           name={`${focusIdx}.children[2].children[0].children[2].data.value.content`}
           inline
 

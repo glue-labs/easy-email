@@ -4,7 +4,7 @@ import { Message } from '@arco-design/web-react';
 import { history } from '@demo/utils/history';
 import { emailToImage } from '@demo/utils/emailToImage';
 import { IBlockData, BlockManager, BasicType, AdvancedType } from 'easy-email-core';
-import { IEmailTemplate } from 'easy-email-editor';
+import { IEmailTemplate, ITempEmailTemplate } from 'easy-email-editor';
 import { getTemplate } from '@demo/config/getTemplate';
 
 export function getAdaptor(data: IArticle): IEmailTemplate {
@@ -58,23 +58,28 @@ export default createSliceState({
         }),
       } as IEmailTemplate;
     },
-    // create: async (
-    //   state,
-    //   payload: {
-    //     template: IEmailTemplate;
-    //     success: (id: number, data: IEmailTemplate) => void;
-    //   },
-    // ) => {
-    //   const picture = await emailToImage(payload.template.content);
-    //   const data = await article.addArticle({
-    //     picture,
-    //     summary: payload.template.subTitle,
-    //     title: payload.template.subject,
-    //     content: JSON.stringify(payload.template.content),
-    //   });
-    //   payload.success(data.article_id, getAdaptor(data));
-    //   return { ...data, ...payload.template };
-    // },
+    create: async (
+      state,
+      payload: {
+        id: string;
+        template: IEmailTemplate;
+        mjml: string;
+        success: (id: string, data: ITempEmailTemplate) => void;
+      },
+    ) => {
+
+      console.log('HI HHH', payload);
+      const data = await article.addTempArticle({
+        // id: payload.id,
+        title: payload.template.subject,
+        mjml: payload.mjml,
+        json: payload.template.content,
+      });
+
+      console.log("data", data, payload.template);
+      // payload.success(data[0].id, data);
+      // return { ...data, ...payload.template };
+    },
     duplicate: async (
       state,
       payload: {

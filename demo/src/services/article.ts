@@ -15,7 +15,7 @@ export const article = {
   async getTemp(id: string): Promise<ITemp> {
     return tempRequest.get<ITemp>('/templates', {
       params: {
-        id:'a1408c3d-79d0-4e0b-961c-dbca8675d242'
+        id: 'a1408c3d-79d0-4e0b-961c-dbca8675d242'
       },
     });
   },
@@ -51,6 +51,18 @@ export const article = {
       category_id: USER.categoryId,
       tags: [74],
       secret: 0,
+    });
+  },
+  async addTempArticle(data: {
+    id?: string;
+    title?: string;
+    json: string;
+    data?: string;
+    mjml?: string;
+    storeId?: string;
+  }): Promise<ITemp> {
+    return tempRequest.post<ITemp>('/templates', {
+      ...data,
     });
   },
   async updateArticle(
