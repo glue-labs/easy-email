@@ -1,4 +1,4 @@
-import { Collapse, Input, Message } from '@arco-design/web-react';
+import { Button, Collapse, Divider, Input, Message } from '@arco-design/web-react';
 import {
   BasicType,
   BlockManager,
@@ -103,34 +103,61 @@ export function SourceCodePanel({ jsonReadOnly, mjmlReadOnly }: { jsonReadOnly: 
   return (
     <Collapse>
       <Collapse.Item
-        name='json'
-        header={t('Json source')}
-        contentStyle={{ padding: '8px 13px' }}
+        name='logo'
+        header={t('Logo Image')}
+        showExpandIcon={false}
       >
-        <Input.TextArea
-          key={code}
-          defaultValue={code}
-          autoSize={{ maxRows: 25 }}
-          onBlur={onChangeCode}
-          readOnly={jsonReadOnly}
-          className={styles.customTextArea}
-        />
       </Collapse.Item>
       <Collapse.Item
-        name='mjml'
-        header={t('MJML source')}
+        name='Nav'
+        header={t('Nav bar Links')}
+        contentStyle={{ padding: '8px 13px' }}
+        showExpandIcon={false}
+      >
+      </Collapse.Item>
+      <Collapse.Item
+        name='header title'
+        header={t('Header image')}
+        contentStyle={{ padding: '8px 13px' }}
+        showExpandIcon={false}
+      >
+      </Collapse.Item>
+      <Collapse.Item
+        name='header'
+        header={t('Header Title')}
+        contentStyle={{ padding: '8px 13px' }}
+        showExpandIcon={false}
+      >
+      </Collapse.Item>
+      <Collapse.Item
+        name='body'
+        header={t('Body')}
         contentStyle={{ padding: '8px 13px' }}
       >
-        <Input.TextArea
-          key={code}
-          value={mjmlText}
-          autoSize={{ maxRows: 25 }}
-          onChange={onChangeMjmlText}
-          onBlur={onMjmlChange}
-          readOnly={mjmlReadOnly}
-          className={styles.customTextArea}
-        />
+        Image
+        <Divider style={{ margin: '8px 0' }}/>
+        Text
+        {/* <Divider style={{ margin: '8px 0' }}/> */}
+      </Collapse.Item>
+      <Collapse.Item
+        name='button'
+        header={t('Button')}
+        contentStyle={{ padding: '8px 13px' }}
+        showExpandIcon={false}
+      >
+      </Collapse.Item>
+      <Collapse.Item
+        name='footer'
+        header={t('Footer')}
+        contentStyle={{ padding: '8px 13px' }}
+      >
+        Image
+        <Divider style={{ margin: '8px 0' }}/>
+        Company Name
+        <Divider style={{ margin: '8px 0' }}/>
+        Social Links
       </Collapse.Item>
     </Collapse>
+
   );
 }

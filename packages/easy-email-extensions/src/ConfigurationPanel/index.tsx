@@ -67,7 +67,7 @@ export function ConfigurationPanel({
             )
           }
         >
-          <Tabs.TabPane
+          {/* <Tabs.TabPane
             title={
               <div style={{ height: 40, lineHeight: '40px' }}>{t('Configuration')}</div>
             }
@@ -75,13 +75,13 @@ export function ConfigurationPanel({
             <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
               <AttributePanel />
             </FullHeightOverlayScrollbars>
-          </Tabs.TabPane>
+          </Tabs.TabPane> */}
 
           <Tabs.TabPane
             destroyOnHide
             key='Source code'
             title={
-              <div style={{ height: 40, lineHeight: '40px' }}>{t('Source code')}</div>
+              <div style={{ height: 40, lineHeight: '40px' }}>{t('Flow Chart')}</div>
             }
           >
             <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
@@ -93,5 +93,6 @@ export function ConfigurationPanel({
         <AttributePanel />
       )}
     </>
+
   );
 }

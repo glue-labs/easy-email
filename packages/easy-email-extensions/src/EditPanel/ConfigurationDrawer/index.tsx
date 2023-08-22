@@ -27,7 +27,8 @@ export function ConfigurationDrawer({
   return useMemo(() => {
     return (
       <>
-        <div
+      <div></div>
+        {/* <div
           ref={refWrapper}
           style={{
             position: 'absolute',
@@ -38,8 +39,8 @@ export function ConfigurationDrawer({
             zIndex: visible ? 1 : -1,
             pointerEvents: visible ? 'auto' : 'none',
           }}
-        />
-        {refWrapper.current && (
+        /> */}
+        {/* {refWrapper.current && (
           <Drawer
             width='100%'
             title={null}
@@ -61,7 +62,7 @@ export function ConfigurationDrawer({
               mjmlReadOnly={mjmlReadOnly}
             />
           </Drawer>
-        )}
+        )} */}
       </>
     );
   }, [visible, onClose, compact, showSourceCode, height]);

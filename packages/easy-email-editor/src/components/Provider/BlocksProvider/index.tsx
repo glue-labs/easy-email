@@ -1,11 +1,11 @@
 import { EventManager } from '@';
 import { EventType } from '@/utils/EventManager';
-import { getPageIdx } from 'easy-email-core';
+import { getPageIdx } from '@core';
 import { isFunction } from 'lodash';
 import React, { useState, useCallback } from 'react';
 
 export enum ActiveTabKeys {
-  EDIT = 'EDIT',
+  EDIT = 'PC',
   MOBILE = 'MOBILE',
   PC = 'PC',
 }
@@ -23,18 +23,18 @@ export const BlocksContext = React.createContext<{
   setActiveTab: React.Dispatch<React.SetStateAction<ActiveTabKeys>>;
 }>({
   initialized: false,
-  setInitialized: () => {},
+  setInitialized: () => { },
   focusIdx: getPageIdx(),
-  setFocusIdx: () => {},
+  setFocusIdx: () => { },
   dragEnabled: false,
-  setDragEnabled: () => {},
+  setDragEnabled: () => { },
   collapsed: false,
-  setCollapsed: () => {},
+  setCollapsed: () => { },
   activeTab: ActiveTabKeys.EDIT,
-  setActiveTab: () => {},
+  setActiveTab: () => { },
 });
 
-export const BlocksProvider: React.FC<{ children?: React.ReactNode }> = props => {
+export const BlocksProvider: React.FC<{ children?: React.ReactNode; }> = props => {
   const [focusIdx, setFocusIdx] = useState(getPageIdx());
   const [dragEnabled, setDragEnabled] = useState(false);
   const [initialized, setInitialized] = useState(false);
