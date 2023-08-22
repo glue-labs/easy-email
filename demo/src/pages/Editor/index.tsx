@@ -282,6 +282,41 @@ export default function Editor() {
     };
   }, [templateData]);
 
+  const onImportJSON = async ({
+    restart,
+  }: {
+    restart: (val: IEmailTemplate) => void;
+  }) => {
+    const uploader = new Uploader(() => Promise.resolve(''), {
+      accept: 'application/json',
+      limit: 1,
+    });
+
+    const [file] = await uploader.chooseFile();
+    const reader = new FileReader();
+    const emailTemplate = await new Promise<IEmailTemplate>((resolve, reject) => {
+      reader.onload = function (evt) {
+        if (!evt.target) {
+          reject();
+          return;
+        }
+        try {
+          const template = JSON.parse(evt.target.result as any) as IEmailTemplate;
+          resolve(template);
+        } catch (error) {
+          reject();
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    restart({
+      subject: emailTemplate.subject,
+      content: emailTemplate.content,
+      subTitle: emailTemplate.subTitle,
+    });
+  };
+
   const onSubmit = useCallback(
     async (
       values: IEmailTemplate,
@@ -368,6 +403,10 @@ export default function Editor() {
                   backIcon
                   title='Back'
                   onBack={() => history.push('/')}
+                  extra={
+                    <Button key='JSON'
+                    onClick={() => onImportJSON({ restart })}>Import Json</Button>
+                  }
                 />
                 <StandardLayout
                   compact={!smallScene}
