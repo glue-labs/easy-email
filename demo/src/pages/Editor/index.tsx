@@ -149,10 +149,10 @@ export default function Editor() {
     setMergeTags,
   } = useMergeTagsModal(testMergeTags);
 
-  const isSubmitting = useLoading([
-    template.loadings.create,
-    template.loadings.updateById,
-  ]);
+  // const isSubmitting = useLoading([
+  //   template.loadings.create,
+  //   template.loadings.updateById,
+  // ]);
 
   useEffect(() => {
     if (collectionCategory) {
@@ -166,11 +166,11 @@ export default function Editor() {
   useEffect(() => {
     if (id) {
       if (!userId) {
-        UserStorage.getAccount().then(account => {
-          dispatch(template.actions.fetchById({ id: +id, userId: account.user_id }));
-        });
+        // UserStorage.getAccount().then(account => {
+        dispatch(template.actions.fetchById({ id: id }));
+        // });
       } else {
-        dispatch(template.actions.fetchById({ id: +id, userId: +userId }));
+        dispatch(template.actions.fetchById({ id: id }));
       }
     } else {
       dispatch(template.actions.fetchDefaultTemplate(undefined));
@@ -317,50 +317,6 @@ export default function Editor() {
     });
   };
 
-  const onSubmit = useCallback(
-    async (
-      values: IEmailTemplate,
-      form: FormApi<IEmailTemplate, Partial<IEmailTemplate>>,
-    ) => {
-      pushEvent({ event: 'EmailSave' });
-      if (id) {
-        const isChanged = !(
-          isEqual(initialValues?.content, values.content) &&
-          isEqual(initialValues?.subTitle, values?.subTitle) &&
-          isEqual(initialValues?.subject, values?.subject)
-        );
-
-        if (!isChanged) {
-          Message.success('Updated success!');
-          form.restart(values);
-          return;
-        }
-        dispatch(
-          template.actions.updateById({
-            id: +id,
-            template: values,
-            success() {
-              Message.success('Updated success!');
-              form.restart(values);
-            },
-          }),
-        );
-      } else {
-        dispatch(
-          template.actions.create({
-            template: values,
-            success(id, newTemplate) {
-              Message.success('Saved success!');
-              form.restart(newTemplate);
-              history.replace(`/editor?id=${id}`);
-            },
-          }),
-        );
-      }
-    },
-    [dispatch, history, id, initialValues],
-  );
-
   const onBeforePreview: EmailEditorProviderProps['onBeforePreview'] = useCallback(
     (html: string, mergeTags) => {
       const engine = new Liquid();
@@ -404,8 +360,11 @@ export default function Editor() {
                   title='Back'
                   onBack={() => history.push('/')}
                   extra={
-                    <Button key='JSON'
-                    onClick={() => onImportJSON({ restart })}>Import Json</Button>
+                    <>
+                      <Button key='JSON'
+                        onClick={() => onImportJSON({ restart })}>Import Json</Button>
+                      <Button>save</Button>
+                    </>
                   }
                 />
                 <StandardLayout

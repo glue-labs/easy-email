@@ -1,9 +1,9 @@
-import { IPage } from 'easy-email-core';
+import { IPage } from '@core';
 
 export interface IEmailTemplate {
   content: IPage;
-  subject: string;
-  subTitle: string;
+  subject?: string;
+  subTitle?: string;
 }
 
 declare global {

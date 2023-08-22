@@ -1,5 +1,6 @@
 import { request } from './axios.config';
 import { USER } from '@demo/constants';
+import { tempRequest } from './template';
 
 export const article = {
   async getArticle(id: number | string, userId: number): Promise<IArticle> {
@@ -10,6 +11,15 @@ export const article = {
       },
     });
   },
+
+  async getTemp(id: string): Promise<ITemp> {
+    return tempRequest.get<ITemp>('/templates', {
+      params: {
+        id:'a1408c3d-79d0-4e0b-961c-dbca8675d242'
+      },
+    });
+  },
+
   async getArticleList({
     size,
     page,
@@ -91,4 +101,15 @@ export interface IArticle {
   created_at: number;
   level: number;
   content: content;
+}
+
+export interface ITemp {
+  summary?: string;
+  id: string;
+  title?: string;
+  data: string;
+  json: string;
+  mjml?: string;
+  created_at?: number;
+  updated_at?: number;
 }

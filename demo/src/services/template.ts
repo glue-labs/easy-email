@@ -4,7 +4,7 @@ export const axiosInstance = axios.create({
   baseURL: 'http://localhost:4000',
 });
 
-export const request = {
+export const tempRequest = {
   async get<T>(url: string, config?: AxiosRequestConfig | undefined) {
     return axiosInstance.get<T>(url, config).then((data) => data.data);
   },
@@ -23,56 +23,56 @@ export const request = {
   },
 };
 
-export const template = {
-  async getTemplate(id: number | string, userId: number): Promise<any> {
-    return request.get<any>('/components/' + id, {
-      params: {
-      id
-      },
-    });
-  },
-};
+// export const template = {
+//   async getTemplate(id: number | string): Promise<any> {
+//     return tempRequest.get<any>('/components/' + id, {
+//       params: {
+//       id
+//       },
+//     });
+//   },
+// };
 
-export interface ListResponse<T> {
-  list: T[];
-  count: number;
-}
+// export interface ListResponse<T> {
+//   list: T[];
+//   count: number;
+// }
 
-export interface ITemplate {
-  name: string;
-  useCase: string;
-  category: string;
-  templatehtml?: any;
-  templateJson?: ITemplateJson;
-  templateMjml?: any;
-  imagePreview?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+// export interface ITemplate {
+//   name: string;
+//   useCase: string;
+//   category: string;
+//   templatehtml?: any;
+//   templateJson?: ITemplateJson;
+//   templateMjml?: any;
+//   imagePreview?: string;
+//   createdAt: string;
+//   updatedAt: string;
+// }
 
-interface IChildrenJson {
-  type: string;
-  data: {
-    value: any;
-  },
-  attributes: Record<string, string>;
-  children: IChildrenJson;
-}
+// interface IChildrenJson {
+//   type: string;
+//   data: {
+//     value: any;
+//   },
+//   attributes: Record<string, string>;
+//   children: IChildrenJson;
+// }
 
-interface ITemplateJson {
-  tag: string;
-  name: string;
-  type: string;
-  defaultData: {
-    type: string;
-    data: {
-      value: any;
-    },
-    attributes: Record<string, string>;
-    children: IChildrenJson;
-  };
-  validParentType: Array<string>;
-}
+// interface ITemplateJson {
+//   tag: string;
+//   name: string;
+//   type: string;
+//   defaultData: {
+//     type: string;
+//     data: {
+//       value: any;
+//     },
+//     attributes: Record<string, string>;
+//     children: IChildrenJson;
+//   };
+//   validParentType: Array<string>;
+// }
 
 
 

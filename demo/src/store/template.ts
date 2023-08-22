@@ -1,4 +1,4 @@
-import { article, IArticle } from '@demo/services/article';
+import { article, IArticle, ITemp } from '@demo/services/article';
 import createSliceState from './common/createSliceState';
 import { Message } from '@arco-design/web-react';
 import { history } from '@demo/utils/history';
@@ -29,19 +29,21 @@ export default createSliceState({
     fetchById: async (
       state,
       {
-        id,
-        userId,
+        id
       }: {
-        id: number;
-        userId: number;
+        id: string;
       },
     ) => {
       try {
         let data = await getTemplate(id);
         if (!data) {
-          data = await article.getArticle(id, userId);
+          data = await article.getTemp(id);
         }
-        return getAdaptor(data);
+        return {
+          content: JSON.parse(data[0].json),
+          subject: '',
+          subTitle: ''
+        };
       } catch (error) {
         history.replace('/');
         throw error;
@@ -56,23 +58,23 @@ export default createSliceState({
         }),
       } as IEmailTemplate;
     },
-    create: async (
-      state,
-      payload: {
-        template: IEmailTemplate;
-        success: (id: number, data: IEmailTemplate) => void;
-      },
-    ) => {
-      const picture = await emailToImage(payload.template.content);
-      const data = await article.addArticle({
-        picture,
-        summary: payload.template.subTitle,
-        title: payload.template.subject,
-        content: JSON.stringify(payload.template.content),
-      });
-      payload.success(data.article_id, getAdaptor(data));
-      return { ...data, ...payload.template };
-    },
+    // create: async (
+    //   state,
+    //   payload: {
+    //     template: IEmailTemplate;
+    //     success: (id: number, data: IEmailTemplate) => void;
+    //   },
+    // ) => {
+    //   const picture = await emailToImage(payload.template.content);
+    //   const data = await article.addArticle({
+    //     picture,
+    //     summary: payload.template.subTitle,
+    //     title: payload.template.subject,
+    //     content: JSON.stringify(payload.template.content),
+    //   });
+    //   payload.success(data.article_id, getAdaptor(data));
+    //   return { ...data, ...payload.template };
+    // },
     duplicate: async (
       state,
       payload: {
@@ -126,7 +128,7 @@ export default createSliceState({
         }
       }
     },
-    removeById: async (state, payload: { id: number; success: () => void }) => {
+    removeById: async (state, payload: { id: number; success: () => void; }) => {
       try {
         await article.deleteArticle(payload.id);
         payload.success();
