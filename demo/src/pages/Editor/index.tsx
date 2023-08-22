@@ -189,6 +189,27 @@ export default function Editor() {
     }
   }, [isDarkMode]);
 
+  const onExportMJML = (values: IEmailTemplate) => {
+    const mjmlString = JsonToMjml({
+      data: values.content,
+      mode: 'production',
+      context: values.content,
+      dataSource: mergeTags,
+    });
+
+    pushEvent({ event: 'MJMLExport', payload: { values, mergeTags } });
+    navigator.clipboard.writeText(mjmlString);
+    saveAs(new Blob([mjmlString], { type: 'text/mjml' }), 'easy-email.mjml');
+  };
+
+  const onExportJSON = (values: IEmailTemplate) => {
+    navigator.clipboard.writeText(JSON.stringify(values, null, 2));
+    saveAs(
+      new Blob([JSON.stringify(values, null, 2)], { type: 'application/json' }),
+      'easy-email.json',
+    );
+  };
+
   // const onChangeTheme = useCallback(t => {
   //   setTheme(t);
   // }, []);
@@ -361,9 +382,32 @@ export default function Editor() {
                   onBack={() => history.push('/')}
                   extra={
                     <>
+                      <Dropdown
+                        droplist={
+                          <Menu>
+                            <Menu.Item
+                              key='Export MJML'
+                              onClick={() => onExportMJML(values)}
+                            >
+                              Export MJML
+                            </Menu.Item>
+                            <Menu.Item
+                              key='Export JSON'
+                              onClick={() => onExportJSON(values)}
+                            >
+                              Export JSON
+                            </Menu.Item>
+                          </Menu>
+                        }
+                      >
+                        <Button>
+                          <strong>Export</strong>
+                        </Button>
+                      </Dropdown>&nbsp;&nbsp;
                       <Button key='JSON'
-                        onClick={() => onImportJSON({ restart })}>Import Json</Button>
+                        onClick={() => onImportJSON({ restart })}>Import Json</Button>&nbsp;&nbsp;
                       <Button>save</Button>
+
                     </>
                   }
                 />
