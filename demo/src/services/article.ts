@@ -49,6 +49,18 @@ export const article = {
       secret: 0,
     });
   },
+  async addTempArticle(data: {
+    id?: string;
+    title?: string;
+    json: string;
+    data?: string;
+    mjml?: string;
+    storeId?: string;
+  }): Promise<ITemp> {
+    return tempRequest.post<ITemp>('/templates', {
+      ...data,
+    });
+  },
   async updateArticle(
     id: number,
     options: {
