@@ -4,6 +4,7 @@ export interface IEmailTemplate {
   content: IPage;
   subject?: string;
   subTitle?: string;
+  defaultData?: Record<string, any>;
 }
 
 declare global {

@@ -40,9 +40,10 @@ export default createSliceState({
           data = await article.getTemp(id);
         }
         return {
-          content: JSON.parse(data[0].json),
+          content: JSON.parse(data.json),
           subject: '',
-          subTitle: ''
+          subTitle: '',
+          defaultData: JSON.parse(data.defaultData),
         };
       } catch (error) {
         history.replace('/');

@@ -13,11 +13,7 @@ export const article = {
   },
 
   async getTemp(id: string): Promise<ITemp> {
-    return tempRequest.get<ITemp>('/templates', {
-      params: {
-        id:'a1408c3d-79d0-4e0b-961c-dbca8675d242'
-      },
-    });
+    return tempRequest.get<ITemp>(`/templates/${id}`);
   },
 
   async getArticleList({

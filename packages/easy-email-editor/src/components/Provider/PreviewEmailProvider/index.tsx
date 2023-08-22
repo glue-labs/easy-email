@@ -21,7 +21,7 @@ export const PreviewEmailContext = React.createContext<{
   mobileWidth: 320,
 });
 
-export const PreviewEmailProvider: React.FC<{ children?: React.ReactNode }> = props => {
+export const PreviewEmailProvider: React.FC<{ children?: React.ReactNode; }> = props => {
   const { current: iframe } = useRef(document.createElement('iframe'));
   const contentWindowRef = useRef<Window | null>(null);
 

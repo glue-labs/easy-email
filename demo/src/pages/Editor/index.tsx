@@ -18,7 +18,7 @@ import {
 } from '@arco-design/web-react';
 import { useQuery } from '@demo/hooks/useQuery';
 import { useHistory } from 'react-router-dom';
-import { cloneDeep, set, isEqual } from 'lodash';
+import { cloneDeep, set, isEqual, get } from 'lodash';
 import { Loading } from '@demo/components/loading';
 import mjml from 'mjml-browser';
 import { copy } from '@demo/utils/clipboard';
@@ -210,6 +210,21 @@ export default function Editor() {
     );
   };
 
+  const onExportHTML = (values: IEmailTemplate) => {
+    const mjmlString = JsonToMjml({
+      data: values.content,
+      mode: 'production',
+      context: values.content,
+      dataSource: mergeTags,
+    });
+
+    const html = mjml(mjmlString, {}).html;
+
+    pushEvent({ event: 'HTMLExport', payload: { values, mergeTags } });
+    navigator.clipboard.writeText(html);
+    saveAs(new Blob([html], { type: 'text/html' }), 'easy-email.html');
+  };
+
   // const onChangeTheme = useCallback(t => {
   //   setTheme(t);
   // }, []);
@@ -297,6 +312,10 @@ export default function Editor() {
   const initialValues: IEmailTemplate | null = useMemo(() => {
     if (!templateData) return null;
     const sourceData = cloneDeep(templateData.content) as IBlockData;
+    setMergeTags({
+      ...mergeTags,
+      ...templateData.defaultData,
+    });
     return {
       ...templateData,
       content: sourceData, // replace standard block
@@ -332,9 +351,9 @@ export default function Editor() {
     });
 
     restart({
-      subject: emailTemplate.subject,
-      content: emailTemplate.content,
-      subTitle: emailTemplate.subTitle,
+      subject: emailTemplate.subject ?? '',
+      content: emailTemplate.content ?? '',
+      subTitle: emailTemplate.subTitle ?? '',
     });
   };
 
@@ -368,9 +387,15 @@ export default function Editor() {
       <div>
         <style>{themeStyleText}</style>
         <EmailEditorProvider
-          key={id}
           height={'calc(100vh - 68px)'}
           data={initialValues}
+          autoComplete
+          enabledLogic
+          dashed={false}
+          mergeTags={mergeTags}
+          mergeTagGenerate={tag => get(mergeTags, tag)}
+          onBeforePreview={onBeforePreview}
+          socialIcons={[]}
         >
           {({ values }, { submit, restart }) => {
             return (
@@ -396,6 +421,12 @@ export default function Editor() {
                               onClick={() => onExportJSON(values)}
                             >
                               Export JSON
+                            </Menu.Item>
+                            <Menu.Item
+                              key='Export JSON'
+                              onClick={() => onExportHTML(values)}
+                            >
+                              Export HTML
                             </Menu.Item>
                           </Menu>
                         }
