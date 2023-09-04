@@ -50,14 +50,14 @@ export function EditPanel({
             <TemplateUi />
           </FullHeightOverlayScrollbars>
         </TabPane>
-        <TabPane
+        {/* <TabPane
           key='2'
           title={t('Blocks')}
         >
           <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
             <Blocks />
           </FullHeightOverlayScrollbars>
-        </TabPane>
+        </TabPane> */}
       </Tabs>
       {!compact && (
         <ConfigurationDrawer

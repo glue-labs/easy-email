@@ -9,7 +9,7 @@ export function HeaderPanel() {
       <div>
         {values.subject}
       </div>
-      <Stack.Item />
+      
     </Stack>
   );
 }
