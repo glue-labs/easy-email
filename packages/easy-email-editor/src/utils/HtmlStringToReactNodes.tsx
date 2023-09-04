@@ -162,22 +162,23 @@ function makeBlockNodeContentEditable(node: ChildNode) {
   const type = getContentEditableTypeFromClassName(node.classList);
   const idx = getContentEditableIdxFromClassName(node.classList);
 
+  // in the setAttribute, we pass false to prevent from edit the content
   if (isTextBlock(type)) {
     const editNode = node.querySelector('div');
     if (editNode) {
-      editNode.setAttribute('contentEditable', 'true');
+      editNode.setAttribute('contentEditable', 'false');
       editNode.setAttribute(DATA_CONTENT_EDITABLE_TYPE, ContentEditableType.RichText);
       editNode.setAttribute(DATA_CONTENT_EDITABLE_IDX, idx);
     }
   } else if (isButtonBlock(type)) {
     const editNode = node.querySelector('a') || node.querySelector('p');
     if (editNode) {
-      editNode.setAttribute('contentEditable', 'true');
+      editNode.setAttribute('contentEditable', 'false');
       editNode.setAttribute(DATA_CONTENT_EDITABLE_TYPE, ContentEditableType.Text);
       editNode.setAttribute(DATA_CONTENT_EDITABLE_IDX, idx);
     }
   } else if (isNavbarBlock(type)) {
-    node.setAttribute('contentEditable', 'true');
+    node.setAttribute('contentEditable', 'false');
     node.setAttribute(DATA_CONTENT_EDITABLE_TYPE, ContentEditableType.Text);
     node.setAttribute(DATA_CONTENT_EDITABLE_IDX, idx);
 
