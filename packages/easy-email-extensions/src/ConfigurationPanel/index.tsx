@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs } from '@arco-design/web-react';
 import { AttributePanel } from '@extensions/AttributePanel';
-import { SourceCodePanel } from '@extensions/SourceCodePanel';
+import { DataPanel } from '@extensions/DataPanel';
 import { FullHeightOverlayScrollbars } from '@extensions/components/FullHeightOverlayScrollbars';
 import { IconLeft } from '@arco-design/web-react/icon';
 import styles from './index.module.scss';
+import { BlockLayer } from '@extensions/BlockLayer';
+import { GlobalAttributePanel } from '@extensions/GlobalAttributePanel';
 
 export interface ConfigurationPanelProps {
   showSourceCode: boolean;
-  jsonReadOnly: boolean;
-  mjmlReadOnly: boolean;
   height: string;
   onBack?: () => void;
   compact?: boolean;
@@ -20,8 +20,6 @@ export function ConfigurationPanel({
   height,
   onBack,
   compact,
-  jsonReadOnly,
-  mjmlReadOnly,
 }: ConfigurationPanelProps) {
   const [inited, setInited] = useState(false);
 
@@ -69,23 +67,25 @@ export function ConfigurationPanel({
         >
           <Tabs.TabPane
             title={
-              <div style={{ height: 40, lineHeight: '40px' }}>{t('Configuration')}</div>
+              <div style={{ height: 40, lineHeight: '40px' }}>{t('Layers')}</div>
             }
           >
             <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
+              {/* <BlockLayer/> */}
               <AttributePanel />
+              {/* <GlobalAttributePanel/> */}
             </FullHeightOverlayScrollbars>
           </Tabs.TabPane>
 
           <Tabs.TabPane
             destroyOnHide
-            key='Source code'
+            key='Data'
             title={
-              <div style={{ height: 40, lineHeight: '40px' }}>{t('Source code')}</div>
+              <div style={{ height: 40, lineHeight: '40px' }}>{t('Data')}</div>
             }
           >
             <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
-              <SourceCodePanel jsonReadOnly={jsonReadOnly} mjmlReadOnly={mjmlReadOnly} />
+              <DataPanel />
             </FullHeightOverlayScrollbars>
           </Tabs.TabPane>
         </Tabs>

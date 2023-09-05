@@ -30,6 +30,11 @@ import { getDirectionFormDropPosition, useAvatarWrapperDrop } from './hooks/useA
 import { getIconNameByBlockType } from '@extensions/utils/getIconNameByBlockType';
 import { Space } from '@arco-design/web-react';
 import { getBlockTitle } from '@extensions/utils/getBlockTitle';
+// import { IconSettings } from '@arco-design/web-react/icon';
+import { ConfigurationPanel } from '@extensions/ConfigurationPanel';
+import { SettingIcon } from './components/SettingIcon';
+import { SimpleLayout } from '@extensions/SimpleLayout';
+import { AttributePanel, AttributesPanelWrapper } from '@extensions/AttributePanel';
 
 export interface IBlockDataWithId extends IBlockData {
   id: string;
@@ -107,10 +112,8 @@ export function BlockLayer(props: BlockLayerProps) {
             </div>
           </Space>
           <div className={styles.eyeIcon}>
-            <EyeIcon
-              blockData={data}
-              onToggleVisible={onToggleVisible}
-            />
+
+            <SettingIcon openConfig = {AttributesPanelWrapper}/>
           </div>
         </div>
       );
@@ -180,6 +183,7 @@ export function BlockLayer(props: BlockLayerProps) {
     params => {
       const { dragNode, dropNode, dropPosition } = params;
       const dragBlock = BlockManager.getBlockByType(dragNode.dataRef.type);
+      console.log('DragBlock', dragBlock);
       if (!dragBlock) return false;
       const dropIndex = getIndexByIdx(dropNode.key);
 

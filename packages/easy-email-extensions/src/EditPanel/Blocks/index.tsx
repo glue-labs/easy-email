@@ -1,4 +1,4 @@
-import { Collapse, Grid, Space, Typography } from '@arco-design/web-react';
+import { Collapse, Grid, Select, Space, Typography } from '@arco-design/web-react';
 import { AdvancedType, BlockManager, IBlockData } from 'easy-email-core';
 import { BlockAvatarWrapper, IconFont } from 'easy-email-editor';
 import React, { useMemo, useState } from 'react';
@@ -8,7 +8,8 @@ import styles from './index.module.scss';
 import { useExtensionProps } from '@extensions/components/Providers/ExtensionProvider';
 
 export function Blocks() {
-  const { categories } = useExtensionProps();
+  const { categories, changeCategories } = useExtensionProps();
+  const [selectedCategory, setSelectedCategory] = useState('Content');
 
   const defaultActiveKey = useMemo(
     () => [
@@ -16,6 +17,7 @@ export function Blocks() {
     ],
     [categories]
   );
+
   return (
     <Collapse
       defaultActiveKey={defaultActiveKey}
@@ -33,9 +35,9 @@ export function Blocks() {
               <Space direction='vertical'>
                 <div />
               </Space>
-              {cat.blocks.map((item) => (
+              {cat.blocks.map((item, index) => (
                 <LayoutItem
-                  key={item.title}
+                  key={index}
                   title={item.title || ''}
                   columns={item.payload}
                 />
@@ -65,21 +67,28 @@ export function Blocks() {
           );
         }
         return (
-          <Collapse.Item
-            key={index}
-            contentStyle={{ padding: 0, paddingBottom: 0, paddingTop: 20 }}
-            name={cat.label}
-            header={cat.label}
-          >
+          <div key={index}>
+            <Select
+              style={{ padding: 15 }}
+              onChange={(t) => { changeCategories && changeCategories(t); }}
+              value={selectedCategory}
+
+            >
+              <Select.Option key='All' value='all'>All</Select.Option>
+              <Select.Option key='footer' value='footer'>Footer</Select.Option>
+              <Select.Option key='topbar' value='topbar'>Topbar</Select.Option>
+              <Select.Option key='body' value='body'>Body</Select.Option>
+            </Select>
             <Grid.Row>
               {cat.blocks.map((item, index) => {
                 return <BlockItem key={index} {...(item as any)} />;
               })}
             </Grid.Row>
-          </Collapse.Item>
+          </div>
         );
       })}
     </Collapse>
+
   );
 }
 
@@ -87,18 +96,20 @@ function BlockItem({
   type,
   payload,
   title,
+  json,
   filterType,
 }: {
   type: string;
   payload?: Partial<IBlockData>;
   title?: string;
   filterType: string | undefined;
+  json: any;
 }) {
-  const block = BlockManager.getBlockByType(type);
+  const block = BlockManager.getBlockByType(type, json);
 
   return (
     <div className={styles.blockItem}>
-      <BlockAvatarWrapper type={type} payload={payload}>
+      <BlockAvatarWrapper type={type} payload={payload} json={json}>
         <div className={styles.blockItemContainer}>
           <IconFont
             style={{ fontSize: 20 }}

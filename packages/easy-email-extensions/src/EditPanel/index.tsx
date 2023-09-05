@@ -2,11 +2,11 @@ import { Layout, Tabs } from '@arco-design/web-react';
 import { useEditorProps } from 'easy-email-editor';
 import React from 'react';
 import { Blocks } from './Blocks';
-import { BlockLayer } from '@extensions/BlockLayer';
 import { FullHeightOverlayScrollbars } from '@extensions/components/FullHeightOverlayScrollbars';
 import styles from './index.module.scss';
 import { ConfigurationDrawer } from './ConfigurationDrawer';
 import { useExtensionProps } from '@extensions/components/Providers/ExtensionProvider';
+import { TemplateUi } from '@extensions/components/AllTemplate';
 
 const TabPane = Tabs.TabPane;
 
@@ -34,7 +34,7 @@ export function EditPanel({
       width={360}
     >
       <Tabs
-        defaultActiveTab='2'
+        defaultActiveTab='1'
         style={{ width: '100%', padding: 0 }}
         renderTabHeader={(_, DefaultHeader) => (
           <div className={styles.largeTabsHeader}>
@@ -43,22 +43,19 @@ export function EditPanel({
         )}
       >
         <TabPane
+          key='1'
+          title={t('Template')}
+        >
+          <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
+            <TemplateUi />
+          </FullHeightOverlayScrollbars>
+        </TabPane>
+        <TabPane
           key='2'
-          title={t('Block')}
+          title={t('Blocks')}
         >
           <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
             <Blocks />
-          </FullHeightOverlayScrollbars>
-        </TabPane>
-
-        <TabPane
-          key='1'
-          title={t('Layer')}
-        >
-          <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
-            <div style={{ padding: 20 }}>
-              <BlockLayer />
-            </div>
           </FullHeightOverlayScrollbars>
         </TabPane>
       </Tabs>

@@ -106,23 +106,23 @@ export const SimpleLayout: React.FC<
           >
             <Tabs className={styles.layoutTabs}>
               <Tabs.TabPane
-                title={
+                title={(
                   <div style={{ height: 31, lineHeight: '31px' }}>
                     {t('Configuration')}
                   </div>
-                }
+                )}
               >
                 <AttributePanel />
               </Tabs.TabPane>
               {showSourceCode && (
                 <Tabs.TabPane
                   destroyOnHide
-                  key='Source code'
-                  title={
+                  key='Data'
+                  title={(
                     <div style={{ height: 31, lineHeight: '31px' }}>
-                      {t('Source code')}
+                      {t('Data')}
                     </div>
-                  }
+                  )}
                 >
                   <SourceCodePanel jsonReadOnly={jsonReadOnly} mjmlReadOnly={mjmlReadOnly} />
                 </Tabs.TabPane>

@@ -1,21 +1,23 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { BlockType, getChildIdx } from 'easy-email-core';
+import { BlockManager, BlockType, getChildIdx } from 'easy-email-core';
 import { useHoverIdx } from '@/hooks/useHoverIdx';
 import { useDataTransfer } from '@/hooks/useDataTransfer';
 import { isUndefined } from 'lodash';
 import { useBlock } from '@/hooks/useBlock';
+import createMyCustomBlock from '@core/blocks/dummy';
 
 export type BlockAvatarWrapperProps = {
   children?: React.ReactNode;
   type: BlockType | string;
   payload?: any;
+  json?: any;
   action?: 'add' | 'move';
   hideIcon?: boolean;
   idx?: string;
 };
 
 export const BlockAvatarWrapper: React.FC<BlockAvatarWrapperProps> = props => {
-  const { type, children, payload, action = 'add', idx } = props;
+  const { type, children, payload, action = 'add', idx, json } = props;
   const { addBlock, moveBlock, values } = useBlock();
   const { setIsDragging, setHoverIdx } = useHoverIdx();
   const { setDataTransfer, dataTransfer } = useDataTransfer();
@@ -23,17 +25,22 @@ export const BlockAvatarWrapper: React.FC<BlockAvatarWrapperProps> = props => {
 
   const onDragStart = useCallback(
     (ev: React.DragEvent) => {
+      if (!BlockManager.getBlockByType(type)) {
+        createMyCustomBlock(json);
+      }
       if (action === 'add') {
         setDataTransfer({
           type: type,
           action,
           payload,
+          json,
         });
       } else {
         setDataTransfer({
           type: type,
           action,
           sourceIdx: idx,
+          json,
         });
       }
 
@@ -52,6 +59,7 @@ export const BlockAvatarWrapper: React.FC<BlockAvatarWrapperProps> = props => {
         parentIdx: dataTransfer.parentIdx,
         positionIndex: dataTransfer.positionIndex,
         payload,
+        json: dataTransfer.json,
       });
     } else {
       if (
