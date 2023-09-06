@@ -8,8 +8,6 @@ export function useMergeTagsModal(defaultMergeTags: Record<string, any>) {
   const [visible, setVisible] = useState(false);
   const [mergeTags, setMergeTags] = useState<any>(defaultMergeTags);
 
-
-
   const openModal = () => {
 
     setVisible(true);

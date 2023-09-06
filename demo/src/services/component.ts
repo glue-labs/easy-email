@@ -70,13 +70,20 @@ export const component = {
       userId: string;
     }
   ): Promise<IComponent> {
-    return request.put<IComponent>('/components/user/template/' + id, {
+    return request.put<IComponent>('/templates/save/' + id, {
       ...data,
     });
   },
   async deleteTemplate(id: number): Promise<string> {
     return request.delete('/components/user/template/' + id);
   },
+
+  async getTemplateData(
+    id:number
+  ): Promise<Record<string, any>> {
+    let req = await request.get<IComponent>('/default-data/' + id);
+    return req;
+  }
 };
 
 export interface ListResponse<T> {

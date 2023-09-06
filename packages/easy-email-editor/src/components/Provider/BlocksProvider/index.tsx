@@ -5,7 +5,7 @@ import { isFunction } from 'lodash';
 import React, { useState, useCallback } from 'react';
 
 export enum ActiveTabKeys {
-  EDIT = 'EDIT',
+  EDIT = 'PC',
   MOBILE = 'MOBILE',
   PC = 'PC',
 }

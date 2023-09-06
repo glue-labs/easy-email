@@ -53,6 +53,7 @@ import {
   onExportMJML
 } from '@demo/utils/exportUtility';
 import { CustomBlocksType } from './components/CustomBlocks/constants';
+import defaultData from '@demo/store/defaultData';
 
 const imageCompression = import('browser-image-compression');
 
@@ -109,6 +110,13 @@ export default function Editor() {
   const templates = useAppSelector('templateList');
   useEffect(() => {
     dispatch(templateList.actions.fetch(undefined));
+  }, [dispatch]);
+
+  console.log(templates, 'okayss')
+
+  const templatesData = useAppSelector('defaultData');
+  useEffect(() => {
+    dispatch(defaultData.actions.fetchById(id));
   }, [dispatch]);
 
   useEffect(() => {
@@ -245,14 +253,13 @@ export default function Editor() {
     const val3 = await onExportImage(values, mergeTags);
     console.log(val3);
 
-    // dispatch(component.actions.update({
-    //   id: '1313',
-    //   data: {
-    //     templateMjml: val2,
-    //     templateJson: val1,
-    //     templateHtml: val,
-    //   }
-    // }));
+    dispatch(component.actions.update({
+      id: '1313',
+      data: {
+        templateMjml: val2,
+        templateJson: val1,
+      }
+    }));
   };
 
   if (!templateData && loading && !categories.length) {
@@ -290,8 +297,13 @@ export default function Editor() {
                 <PageHeader
                   style={{ background: 'var(--color-bg-2)' }}
                   backIcon
-                  title='Back'
-                  onBack={() => history.push('/')}
+                  title='Go Back To xG'
+                  onBack={() => {
+                    if (window.confirm('Are you sure you want to go back?')) {
+                      // Perform the navigation here
+                      history.push('/');
+                    }
+                  }}
                   extra={
                     <Stack alignment='center'>
                       <Button

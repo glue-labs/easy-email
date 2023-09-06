@@ -25,7 +25,7 @@ export function AttributePanel() {
 
   const shadowRoot = getShadowRoot();
 
-  if (!initialized) return null;
+  // if (!initialized) return null;
 
   return (
     <SelectionRangeProvider>

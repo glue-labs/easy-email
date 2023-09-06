@@ -1,10 +1,14 @@
 import { useEditorProps } from '@';
 import { Button, Form, FormInstance, Input, Space } from '@arco-design/web-react';
 import { IconDelete, IconPlus, IconSave } from '@arco-design/web-react/icon';
+import { useExtensionProps } from '@extensions';
 import React, { useRef, useState } from 'react';
 
 export function DataPanel() {
   const { setMergeTags, mergeTags } = useEditorProps();
+  const { templateData } = useExtensionProps();
+  console.log("templateData", templateData)
+  
 
   const formRef = useRef<FormInstance>(null);
   return (
@@ -61,12 +65,12 @@ export function DataPanel() {
                         >
                           <Input />
                         </Form.Item>
-                        <Button
+                        {/* <Button
                           icon={<IconDelete />}
                           shape='circle'
                           status='danger'
                           onClick={() => remove(index)}
-                        />
+                        /> */}
                       </Space>
                     </div>
                   );
@@ -74,13 +78,13 @@ export function DataPanel() {
                 <Form.Item style={{ padding: 10 }}>
                   <Space size={20}>
 
-                    <Button
+                    {/* <Button
                       type='primary'
                       icon={<IconPlus />}
                       onClick={() => {
                         add();
                       }}
-                    />
+                    /> */}
                     <Button
                       icon={<IconSave />}
                       type='primary'

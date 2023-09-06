@@ -30,6 +30,7 @@ export default createSliceState({
 
       return data;
     },
+
     update: async (state, { id, data }) => {
       const res = await component.updateTemplate(id, {
         ...data,

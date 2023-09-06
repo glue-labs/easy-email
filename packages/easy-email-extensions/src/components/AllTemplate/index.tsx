@@ -8,11 +8,11 @@ import { useExtensionProps } from '../Providers/ExtensionProvider';
 
 export const TemplateUi = () => {
   const { templates } = useExtensionProps();
-  console.log(templates, 'TEMPLATES');
   const form = useForm();
 
-  const onSubmit = (values: IEmailTemplate) => {
+  const onSubmit = (values: IEmailTemplate, id:number) => {
     form.restart(values);
+
   };
 
   return (
@@ -40,7 +40,7 @@ export const TemplateUi = () => {
                   key={index}
                 />
                 <br />
-                <Button onClick={() => onSubmit(card.templateJson)}>Use This Template
+                <Button onClick={() => onSubmit(card.templateJson, card.id)}>Use This Template
                 </Button>
               </Card>
               <Divider style={{ border: '5px solid rgb(var(--gray-3))' }} />

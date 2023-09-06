@@ -52,6 +52,7 @@ export const EmailEditor = () => {
           onBeforeChange={onBeforeChangeTab}
           onChange={onChangeTab}
           style={{ height: '100%', width: '100%' }}
+          tabBarExtraContent={<ToolsPanel />}
           titlePanelContent={<HeaderPanel />}
         >
           {/* <TabPane

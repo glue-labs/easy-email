@@ -60,14 +60,14 @@ export function Input(props: InputProps) {
     <>
       <Grid.Row style={{ width: '100%' }}>
 
-        {mergeTags && (
+        {/* {mergeTags && (
           <Popover
             trigger='click'
             content={<MergeTags value={value} onChange={onChange} />}
           >
             <Button icon={<IconFont iconName='icon-merge-tags' />} />
           </Popover>
-        )}
+        )} */}
         <ArcoInput
           {...{ ...props, quickchange: undefined }}
           onChange={(value) => onChange(value)}
