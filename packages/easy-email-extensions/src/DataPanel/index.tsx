@@ -6,14 +6,12 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 export function DataPanel() {
   const { setMergeTags, mergeTags } = useEditorProps();
-  const { changeCategories, updateDefaultData, mergeTagData } = useExtensionProps();
+  const { updateDefaultData, mergeTagData } = useExtensionProps();
   console.log("templateData", updateDefaultData, '<<<<<<', mergeTagData);
-
-  const [initialValues, setInitialValues] = useState({ tagData: {} });
+  const formRef = useRef<FormInstance>(null);
+  const [initialValues, setInitialValues] = useState({ tagData: [] });
 
   useMemo(() => {
-    console.log('mergeTagData>>>>', mergeTagData, mergeTags);
-
     const newValues = {
       tagData: mergeTagData?.mutableKeys.map((k: string) => {
         return {
@@ -22,12 +20,13 @@ export function DataPanel() {
         };
       }),
     };
-    console.log('SSDDDDD', newValues);
+    if (mergeTagData?.mutableKeys) {
+      formRef?.current?.setFieldsValue(newValues);
+    }
     setInitialValues(newValues);
   }, [mergeTags]);
 
   console.log(initialValues, 'SDDD');
-  const formRef = useRef<FormInstance>(null);
   return (
     <div style={{ padding: 0 }}>
       <Form
