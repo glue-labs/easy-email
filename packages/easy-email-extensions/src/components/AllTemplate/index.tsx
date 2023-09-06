@@ -7,12 +7,13 @@ import { useForm } from 'react-final-form';
 import { useExtensionProps } from '../Providers/ExtensionProvider';
 
 export const TemplateUi = () => {
-  const { templates } = useExtensionProps();
+  const { templates, updateDefaultData } = useExtensionProps();
   const form = useForm();
 
-  const onSubmit = (values: IEmailTemplate, id:number) => {
+  const onSubmit = (values: IEmailTemplate, id: number) => {
+    console.log('IIIIIIII', id);
     form.restart(values);
-
+    updateDefaultData && updateDefaultData(+1);
   };
 
   return (

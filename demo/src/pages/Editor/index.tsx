@@ -112,9 +112,9 @@ export default function Editor() {
     dispatch(templateList.actions.fetch(undefined));
   }, [dispatch]);
 
-  console.log(templates, 'okayss')
+  console.log(templates, 'okayss');
 
-  const templatesData = useAppSelector('defaultData');
+  const mergeTagData = useAppSelector('defaultData');
   useEffect(() => {
     dispatch(defaultData.actions.fetchById(id));
   }, [dispatch]);
@@ -147,6 +147,16 @@ export default function Editor() {
     };
   }, [dispatch, id, userId]);
 
+  // Update merge tags keys
+  useEffect(() => {
+    if (!mergeTagData || !Object.keys(mergeTagData).length) return;
+    console.log('SFF', mergeTagData);
+    setMergeTags({
+      ...mergeTagData.fields,
+      mutableKeys: mergeTagData.mutableKeys
+    });
+  }, [mergeTagData]);
+
   // Compress Image & Upload
   const onUploadImage = async (blob: Blob) => {
     const compressionFile = await (
@@ -165,6 +175,10 @@ export default function Editor() {
       return newObj;
     });
   }, []);
+
+  const updateDefaultData = (id: string) => {
+    dispatch(defaultData.actions.fetchById(+id));
+  };
 
   // Load Template Data into the Editor
   const initialValues: IEmailTemplate | null = useMemo(() => {
@@ -320,6 +334,8 @@ export default function Editor() {
                   categories={categories}
                   changeCategories={changeCategories}
                   templates={templates}
+                  mergeTagData={mergeTagData}
+                  updateDefaultData={updateDefaultData}
                 >
                   <EmailEditor />
                 </StandardLayout>

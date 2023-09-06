@@ -79,9 +79,9 @@ export const component = {
   },
 
   async getTemplateData(
-    id:number
-  ): Promise<Record<string, any>> {
-    let req = await request.get<IComponent>('/default-data/' + id);
+    id: number
+  ): Promise<any> {
+    let req = await request.get<string>('/default-data/' + id);
     return req;
   }
 };

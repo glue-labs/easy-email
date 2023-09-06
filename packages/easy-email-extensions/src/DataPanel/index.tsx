@@ -2,14 +2,31 @@ import { useEditorProps } from '@';
 import { Button, Form, FormInstance, Input, Space } from '@arco-design/web-react';
 import { IconDelete, IconPlus, IconSave } from '@arco-design/web-react/icon';
 import { useExtensionProps } from '@extensions';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 export function DataPanel() {
   const { setMergeTags, mergeTags } = useEditorProps();
-  const { templateData } = useExtensionProps();
-  console.log("templateData", templateData)
-  
+  const { changeCategories, updateDefaultData, mergeTagData } = useExtensionProps();
+  console.log("templateData", updateDefaultData, '<<<<<<', mergeTagData);
 
+  const [initialValues, setInitialValues] = useState({ tagData: {} });
+
+  useMemo(() => {
+    console.log('mergeTagData>>>>', mergeTagData, mergeTags);
+
+    const newValues = {
+      tagData: mergeTagData?.mutableKeys.map((k: string) => {
+        return {
+          key: k,
+          value: mergeTags && mergeTags[k]
+        };
+      }),
+    };
+    console.log('SSDDDDD', newValues);
+    setInitialValues(newValues);
+  }, [mergeTags]);
+
+  console.log(initialValues, 'SDDD');
   const formRef = useRef<FormInstance>(null);
   return (
     <div style={{ padding: 0 }}>
@@ -23,17 +40,11 @@ export function DataPanel() {
           });
 
           setMergeTags && setMergeTags({
-            global: newObj
+            ...mergeTags,
+            ...newObj
           });
         })}
-        initialValues={{
-          tagData: Object.keys(mergeTags?.global).map(k => {
-            return {
-              key: k,
-              value: mergeTags?.global[k]
-            };
-          }),
-        }}
+        initialValues={initialValues}
         onValuesChange={(_, v) => {
           if (Array.isArray(_)) {
             return;

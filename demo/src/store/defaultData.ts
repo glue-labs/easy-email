@@ -17,10 +17,14 @@ export default createSliceState({
     ) => {
       try {
         let data = await component.getTemplateData(id);
-        data = JSON.parse(data.content.content) as IBlockData;
+        console.log(data, 'SFF');
+        data = JSON.parse(data);
+        console.log(data, 'Adta');
         return data;
       } catch (error) {
+        console.log('Error', error);
         throw error;
       }
     },
-  }});
+  }
+});

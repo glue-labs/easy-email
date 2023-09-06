@@ -50,6 +50,8 @@ export interface ExtensionProps extends BlockLayerProps {
   changeCategories?: (category: string) => void;
   templates?: Array<Record<string, any>>;
   templateData?: Array<Record<string, any>>;
+  mergeTagData?: Record<string, any>,
+  updateDefaultData?: (id: number) => void;
 }
 
 export const ExtensionContext = React.createContext<ExtensionProps>({
