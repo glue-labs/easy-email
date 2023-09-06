@@ -47,8 +47,8 @@ import { IconSave } from '@arco-design/web-react/icon';
 import component from '@demo/store/component';
 import templateList from '@demo/store/templateList';
 import {
-  onExportHTML,
-  onExportImage,
+  // onExportHTML,
+  // onExportImage,
   onExportJSON,
   onExportMJML
 } from '@demo/utils/exportUtility';
@@ -260,12 +260,12 @@ export default function Editor() {
   const saveMyTemplate = async (values: IEmailTemplate) => {
     const val1 = onExportJSON(values);
     console.log(val1);
-    const val = onExportHTML(values, mergeTags);
-    console.log(val);
+    // const val = onExportHTML(values, mergeTags);
+    // console.log(val);
     const val2 = onExportMJML(values, mergeTags);
     console.log(val2);
-    const val3 = await onExportImage(values, mergeTags);
-    console.log(val3);
+    // const val3 = await onExportImage(values, mergeTags);
+    // console.log(val3);
 
     dispatch(component.actions.update({
       id: '1313',
