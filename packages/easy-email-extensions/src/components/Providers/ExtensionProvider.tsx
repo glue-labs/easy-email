@@ -49,7 +49,6 @@ export interface ExtensionProps extends BlockLayerProps {
   compact?: boolean;
   changeCategories?: (category: string) => void;
   templates?: Array<Record<string, any>>;
-  templateData?: Array<Record<string, any>>;
   mergeTagData?: Record<string, any>,
   updateDefaultData?: (id: number) => void;
 }

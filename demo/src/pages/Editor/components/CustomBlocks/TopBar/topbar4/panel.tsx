@@ -122,7 +122,6 @@ export function TopBar4Panel(props: any) {
                       style={{ width: '100%' }}
                     >
                       {attribute.properties.map((props: any, index: number) => {
-                        console.log("cimage", (focusIdx), (attribute.path), (props.path));
                         if (props.label === 'Image') {
                           return (
                             <TextField
@@ -133,7 +132,6 @@ export function TopBar4Panel(props: any) {
                           );
                         }
                         if (props.label === 'Width') {
-                          console.log("pathsssssssss", props.path);
                           return (
                             <TextField
                               label={props.label}

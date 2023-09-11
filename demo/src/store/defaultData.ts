@@ -3,9 +3,9 @@ import { component } from '@demo/services/component';
 import { IBlockData } from 'easy-email-core';
 
 export default createSliceState({
-  name: 'templateData',
-  initialState: null as Record<string, any> | null,
-  reducers: {
+  name: 'defaultData',
+  initialState: [] as Record<string, any>,
+  reducers:  {
     set: (state, action) => {
       return action.payload;
     },
@@ -17,12 +17,8 @@ export default createSliceState({
     ) => {
       try {
         let data = await component.getTemplateData(id);
-        console.log(data, 'SFF');
-        data = JSON.parse(data);
-        console.log(data, 'Adta');
         return data;
       } catch (error) {
-        console.log('Error', error);
         throw error;
       }
     },

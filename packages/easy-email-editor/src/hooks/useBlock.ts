@@ -43,13 +43,6 @@ export function useBlock() {
       json?: any;
     }) => {
       return new Promise(async (resolve) => {
-        console.log(params, 'FD', params.type);
-        // await new Promise((resolve) => {
-        //   setTimeout(() => {
-        //     console.log('DFDD');
-        //     resolve();
-        //   }, 100);
-        // });
         const start = console.time();
 
         let { type, parentIdx, positionIndex, payload, json } = params;
@@ -126,7 +119,6 @@ export function useBlock() {
 
   const moveBlock = useCallback(
     (sourceIdx: string, destinationIdx: string) => {
-      console.log('DFF', sourceIdx);
       if (sourceIdx === destinationIdx) return null;
 
       let nextFocusIdx: string;

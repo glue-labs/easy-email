@@ -73,7 +73,6 @@ export function getInsertPosition(params: Params) {
         const prevParent = getParentByIdx(context, parentData.parentIdx);
         if (prevParent) {
           const isLeft = directionPosition.horizontal.direction === 'left';
-          console.log('idx', parentData.parentIdx);
           return {
             parentIdx: getParentIdx(parentData.parentIdx)!,
             insertIndex: isLeft

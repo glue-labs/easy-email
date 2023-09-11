@@ -4,8 +4,6 @@ import { useFocusIdx } from 'easy-email-editor';
 
 export function Color({ title = t('Color') }: { title?: string; inline?: boolean; }) {
   const { focusIdx } = useFocusIdx();
-
-  console.log(`${focusIdx}.attributes.color`, 'focusIds');
   return (
     <ColorPickerField
       label={title}

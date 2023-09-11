@@ -16,7 +16,6 @@ export function HoverTooltip() {
   const rootRef = useRef<DOMRect | null>(null);
 
   useEffect(() => {
-    console.log("hello", initialized)
     if (initialized) {
       rootRef.current = getEditorRoot()!.getBoundingClientRect();
     }

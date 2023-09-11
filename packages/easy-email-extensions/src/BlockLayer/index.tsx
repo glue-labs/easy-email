@@ -183,7 +183,6 @@ export function BlockLayer(props: BlockLayerProps) {
     params => {
       const { dragNode, dropNode, dropPosition } = params;
       const dragBlock = BlockManager.getBlockByType(dragNode.dataRef.type);
-      console.log('DragBlock', dragBlock);
       if (!dragBlock) return false;
       const dropIndex = getIndexByIdx(dropNode.key);
 

@@ -11,9 +11,8 @@ export const TemplateUi = () => {
   const form = useForm();
 
   const onSubmit = (values: IEmailTemplate, id: number) => {
-    console.log('IIIIIIII', id);
     form.restart(values);
-    updateDefaultData && updateDefaultData(+1);
+    updateDefaultData && updateDefaultData(+id);
   };
 
   return (

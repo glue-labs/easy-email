@@ -25,7 +25,7 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
         <Collapse defaultActiveKey={['0', '1']}>
           <Collapse.Item
             name='0'
-            header={t('Email Setting')}
+            header={t('Email Settings')}
           >
             <Space direction='vertical'>
               {!hideSubject && (
@@ -42,7 +42,7 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                   inline
                 />
               )}
-              <InputWithUnitField
+              {/* <InputWithUnitField
                 label={t('Width')}
                 name={`${focusIdx}.attributes.width`}
                 inline
@@ -54,12 +54,12 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                 )}
                 name={`${focusIdx}.data.value.breakpoint`}
                 inline
-              />
+              /> */}
             </Space>
           </Collapse.Item>
           <Collapse.Item
             name='1'
-            header={t('Theme Setting')}
+            header={t('Template Settings')}
           >
             <Stack
               vertical
@@ -69,35 +69,11 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                 <Grid.Col span={11}>
                   <FontFamily name={`${focusIdx}.data.value.font-family`} />
                 </Grid.Col>
-                <Grid.Col
-                  offset={1}
-                  span={11}
-                >
-                  <NumberField
-                    label='Font size (px)'
-                    name={`${focusIdx}.data.value.font-size`}
-                    config={pixelAdapter}
-                    autoComplete='off'
-                  />
-                </Grid.Col>
-              </Grid.Row>
-
-              <Grid.Row>
-                <Grid.Col span={11}>
+                <Grid.Col span={11} offset={1}>
                   <InputWithUnitField
                     label={t('Line height')}
                     unitOptions='percent'
                     name={`${focusIdx}.data.value.line-height`}
-                  />
-                </Grid.Col>
-                <Grid.Col
-                  offset={1}
-                  span={11}
-                >
-                  <InputWithUnitField
-                    label={t('Font weight')}
-                    unitOptions='percent'
-                    name={`${focusIdx}.data.value.font-weight`}
                   />
                 </Grid.Col>
               </Grid.Row>
@@ -120,7 +96,7 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                 </Grid.Col>
               </Grid.Row>
 
-              <Grid.Row>
+              {/* <Grid.Row>
                 <ColorPickerField
                   label={t('Content background')}
                   name={`${focusIdx}.data.value.content-background-color`}
@@ -131,12 +107,12 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                 autoSize
                 label={t('User style')}
                 name={`${focusIdx}.data.value.user-style.content`}
-              />
+              /> */}
               <Stack.Item />
               <Stack.Item />
-              <AddFont />
+              {/* <AddFont />
               <Stack.Item />
-              <Stack.Item />
+              <Stack.Item /> */}
             </Stack>
           </Collapse.Item>
         </Collapse>

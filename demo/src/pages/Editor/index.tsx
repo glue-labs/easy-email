@@ -93,7 +93,7 @@ export default function Editor() {
 
   const smallScene = width < 1400;
 
-  const { id, userId } = useQuery();
+  let { id, userId } = useQuery();
   const loading = useLoading(template.loadings.fetchById);
   const {
     mergeTags,
@@ -112,12 +112,14 @@ export default function Editor() {
     dispatch(templateList.actions.fetch(undefined));
   }, [dispatch]);
 
-  console.log(templates, 'okayss');
-
   const mergeTagData = useAppSelector('defaultData');
   useEffect(() => {
     dispatch(defaultData.actions.fetchById(id));
   }, [dispatch]);
+
+  const updateDefaultData = (id: string) => {
+    dispatch(defaultData.actions.fetchById(+id));
+  };
 
   useEffect(() => {
     if (collectionCategory) {
@@ -150,7 +152,6 @@ export default function Editor() {
   // Update merge tags keys
   useEffect(() => {
     if (!mergeTagData || !Object.keys(mergeTagData).length) return;
-    console.log('SFF', mergeTagData);
     setMergeTags({
       ...mergeTagData.fields,
       mutableKeys: mergeTagData.mutableKeys
@@ -176,9 +177,7 @@ export default function Editor() {
     });
   }, []);
 
-  const updateDefaultData = (id: string) => {
-    dispatch(defaultData.actions.fetchById(+id));
-  };
+
 
   // Load Template Data into the Editor
   const initialValues: IEmailTemplate | null = useMemo(() => {
@@ -238,7 +237,7 @@ export default function Editor() {
             success(id, newTemplate) {
               Message.success('Saved success!');
               form.restart(newTemplate);
-              history.replace(`/editor?id=${id}`);
+              // history.replace(`/editor?id=${id}`);
             },
           }),
         );
@@ -259,13 +258,9 @@ export default function Editor() {
 
   const saveMyTemplate = async (values: IEmailTemplate) => {
     const val1 = onExportJSON(values);
-    console.log(val1);
     // const val = onExportHTML(values, mergeTags);
-    // console.log(val);
     const val2 = onExportMJML(values, mergeTags);
-    console.log(val2);
     // const val3 = await onExportImage(values, mergeTags);
-    // console.log(val3);
 
     dispatch(component.actions.update({
       id: '1313',
