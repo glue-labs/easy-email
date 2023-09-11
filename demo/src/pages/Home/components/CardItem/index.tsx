@@ -10,22 +10,22 @@ import { getLoadingByKey, useLoading } from '@demo/hooks/useLoading';
 import { Loading } from '@demo/components/loading';
 
 interface CardItemProps {
-  data: IArticle;
+  data: any;
 }
 
 export function CardItem(props: CardItemProps) {
   const { data } = props;
 
   const loading = useLoading([
-    getLoadingByKey(template.loadings.duplicate, data.article_id),
-    getLoadingByKey(template.loadings.removeById, data.article_id),
+    getLoadingByKey(template.loadings.duplicate, data.id),
+    getLoadingByKey(template.loadings.removeById, data.id),
   ]);
 
   return (
     <div
-      key={data.article_id}
+      key={data.id}
       className={styles.templeteItem}
-      style={{ backgroundImage: `url(${data.picture})` }}
+      style={{ backgroundImage: `url(${data.imageUrl})` }}
     >
       <div className={styles.bottom}>
         <div className={styles.title}>Title: {data.title}</div>
@@ -42,11 +42,11 @@ export function CardItem(props: CardItemProps) {
           <div className={styles.listBottom}>
             <div className={styles.listItem}>
               <Link
-                to={`/editor?id=${data.article_id}&userId=${data.user_id}`}
+                to={`/editor?id=${data.id}`}
                 onClick={() =>
                   pushEvent({
                     event: 'Edit',
-                    payload: { article_id: data.article_id, title: data.title },
+                    payload: { article_id: data.id, title: data.title },
                   })
                 }
               >

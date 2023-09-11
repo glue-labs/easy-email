@@ -132,15 +132,19 @@ export default function Editor() {
 
   // Get Template Data By Doing API Call on Component mount
   useEffect(() => {
+    console.log("aayi kya id", id)
     if (id) {
       if (!userId) {
-        UserStorage.getAccount().then(account => {
-          dispatch(template.actions.fetchById({ id: +id, userId: account.user_id }));
-        });
+        console.log("check 1")
+        // UserStorage.getAccount().then(account => {
+          dispatch(template.actions.fetchById({ id: +id }));
+        // });
       } else {
-        dispatch(template.actions.fetchById({ id: +id, userId: +userId }));
+        console.log("check 2")
+        dispatch(template.actions.fetchById({ id: +id }));
       }
     } else {
+      console.log("check 3")
       dispatch(template.actions.fetchDefaultTemplate(undefined));
     }
 
@@ -233,6 +237,7 @@ export default function Editor() {
       } else {
         dispatch(
           template.actions.create({
+            id: 2,
             template: values,
             success(id, newTemplate) {
               Message.success('Saved success!');

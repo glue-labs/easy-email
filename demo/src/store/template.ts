@@ -6,6 +6,7 @@ import { emailToImage } from '@demo/utils/emailToImage';
 import { IBlockData, BlockManager, BasicType, AdvancedType } from 'easy-email-core';
 import { IEmailTemplate } from 'easy-email-editor';
 import { getTemplate } from '@demo/config/getTemplate';
+import { component } from '@demo/services/component';
 
 export function getAdaptor(data: IArticle): IEmailTemplate {
   const content = JSON.parse(data.content.content) as IBlockData;
@@ -16,6 +17,16 @@ export function getAdaptor(data: IArticle): IEmailTemplate {
     subTitle: data.summary,
   };
 }
+
+export function getAdaptorV2(data: { content: string; subTitle: string; subject:string;}): IEmailTemplate {
+  // const content = JSON.parse(data) as IBlockData;
+  return {
+    content: data.content,
+    subTitle: data.subTitle,
+    subject: data.subject,
+  };
+}
+
 
 export default createSliceState({
   name: 'template',
@@ -30,18 +41,19 @@ export default createSliceState({
       state,
       {
         id,
-        userId,
       }: {
         id: number;
-        userId: number;
       },
     ) => {
       try {
         let data = await getTemplate(id);
+        console.log("before data", data);
         if (!data) {
-          data = await article.getArticle(id, userId);
+          console.log("if ke andr", id);
+          data = await component.getTemplateById(id);
         }
-        return getAdaptor(data);
+        console.log("data", data);
+        return getAdaptorV2(data.templateJson);
       } catch (error) {
         history.replace('/');
         throw error;
@@ -59,6 +71,7 @@ export default createSliceState({
     create: async (
       state,
       payload: {
+        id: number,
         template: IEmailTemplate;
         success: (id: number, data: IEmailTemplate) => void;
       },
@@ -126,7 +139,7 @@ export default createSliceState({
         }
       }
     },
-    removeById: async (state, payload: { id: number; success: () => void }) => {
+    removeById: async (state, payload: { id: number; success: () => void; }) => {
       try {
         await article.deleteArticle(payload.id);
         payload.success();

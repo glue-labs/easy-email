@@ -31,6 +31,12 @@ export const component = {
       },
     });
   },
+
+  async getTemplateById(id: number | string): Promise<any> {
+    console.log(id,"iddd")
+    return request.get<string>(`/templates/${id}`);
+  },
+
   async getTemplateList(): Promise<ITemplate[]> {
     return request.get<Array<ITemplate>>('/templates');
   },
