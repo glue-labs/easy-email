@@ -1,4 +1,4 @@
-import { useEditorProps } from '@';
+import { useEditorProps } from 'easy-email-editor';
 import { Button, Form, FormInstance, Input, Space } from '@arco-design/web-react';
 import { IconDelete, IconPlus, IconSave } from '@arco-design/web-react/icon';
 import { useExtensionProps } from '@extensions';

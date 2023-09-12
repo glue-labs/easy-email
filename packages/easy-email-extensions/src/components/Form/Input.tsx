@@ -1,4 +1,4 @@
-import { IconFont, useEditorProps } from '@';
+import { IconFont, useEditorProps } from 'easy-email-editor';
 import { Input as ArcoInput, InputProps as ArcoInputProps, Button, Grid, Popover } from '@arco-design/web-react';
 import React, { useCallback } from 'react';
 import { MergeTags } from '@extensions';

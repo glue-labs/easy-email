@@ -1,4 +1,4 @@
-import { useFocusIdx } from '@';
+import { useFocusIdx } from 'easy-email-editor';
 import { Collapse } from '@arco-design/web-react';
 import React from 'react';
 

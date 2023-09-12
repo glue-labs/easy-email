@@ -4,7 +4,7 @@ import { useHoverIdx } from '@/hooks/useHoverIdx';
 import { useDataTransfer } from '@/hooks/useDataTransfer';
 import { isUndefined } from 'lodash';
 import { useBlock } from '@/hooks/useBlock';
-import createMyCustomBlock from '@core/blocks/dummy';
+// import createMyCustomBlock from '@core/blocks/dummy';
 
 export type BlockAvatarWrapperProps = {
   children?: React.ReactNode;
@@ -25,9 +25,9 @@ export const BlockAvatarWrapper: React.FC<BlockAvatarWrapperProps> = props => {
 
   const onDragStart = useCallback(
     (ev: React.DragEvent) => {
-      if (!BlockManager.getBlockByType(type)) {
-        createMyCustomBlock(json);
-      }
+      // if (!BlockManager.getBlockByType(type)) {
+      //   createMyCustomBlock(json);
+      // }
       if (action === 'add') {
         setDataTransfer({
           type: type,

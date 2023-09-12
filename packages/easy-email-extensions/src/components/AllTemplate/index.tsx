@@ -1,10 +1,10 @@
-import { IEmailTemplate } from '@';
 import { Button, Card, Divider } from '@arco-design/web-react';
 import Meta from '@arco-design/web-react/es/Card/meta';
-import { cards } from '@extensions/utils/templates';
+// import { cards } from '@extensions/utils/templates';
 import React from 'react';
 import { useForm } from 'react-final-form';
 import { useExtensionProps } from '../Providers/ExtensionProvider';
+import { IEmailTemplate } from 'easy-email-editor';
 
 export const TemplateUi = () => {
   const { templates, updateDefaultData } = useExtensionProps();

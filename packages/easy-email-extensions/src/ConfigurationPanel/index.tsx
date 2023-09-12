@@ -5,11 +5,13 @@ import { DataPanel } from '@extensions/DataPanel';
 import { FullHeightOverlayScrollbars } from '@extensions/components/FullHeightOverlayScrollbars';
 import { IconLeft } from '@arco-design/web-react/icon';
 import styles from './index.module.scss';
-import { BlockLayer } from '@extensions/BlockLayer';
-import { GlobalAttributePanel } from '@extensions/GlobalAttributePanel';
+// import { BlockLayer } from '@extensions/BlockLayer';
+// import { GlobalAttributePanel } from '@extensions/GlobalAttributePanel';
 
 export interface ConfigurationPanelProps {
   showSourceCode: boolean;
+  jsonReadOnly: boolean;
+  mjmlReadOnly: boolean;
   height: string;
   onBack?: () => void;
   compact?: boolean;

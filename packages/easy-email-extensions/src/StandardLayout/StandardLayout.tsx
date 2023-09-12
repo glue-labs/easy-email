@@ -117,6 +117,8 @@ export const StandardLayout: React.FC<ExtensionProps> = props => {
                   compact={compact}
                   height={containerHeight}
                   showSourceCode={showSourceCode}
+                  jsonReadOnly={jsonReadOnly}
+                  mjmlReadOnly={mjmlReadOnly}
                 />
               </Layout.Sider>
             ) : (
