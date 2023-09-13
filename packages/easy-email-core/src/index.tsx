@@ -3,3 +3,4 @@ export * from './blocks';
 export * as components from './components';
 export * from './typings/index';
 export * from './constants';
+export * from './blocks/dummy';

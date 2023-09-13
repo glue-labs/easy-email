@@ -2,7 +2,7 @@ import { useEditorContext } from '@/hooks/useEditorContext';
 import { useEditorProps } from '@/hooks/useEditorProps';
 import { useLazyState } from '@/hooks/useLazyState';
 import { HtmlStringToPreviewReactNodes } from '@/utils/HtmlStringToPreviewReactNodes';
-import { JsonToMjml } from '@core';
+import { JsonToMjml } from 'easy-email-core';
 import { cloneDeep, isString } from 'lodash';
 import mjml from 'mjml-browser';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -21,7 +21,7 @@ export const PreviewEmailContext = React.createContext<{
   mobileWidth: 320,
 });
 
-export const PreviewEmailProvider: React.FC<{ children?: React.ReactNode }> = props => {
+export const PreviewEmailProvider: React.FC<{ children?: React.ReactNode; }> = props => {
   const { current: iframe } = useRef(document.createElement('iframe'));
   const contentWindowRef = useRef<Window | null>(null);
 

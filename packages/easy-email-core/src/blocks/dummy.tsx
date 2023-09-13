@@ -4,7 +4,7 @@ import { mergeBlock } from '@core/utils/mergeBlock';
 import { BlockManager, t } from '@core/utils';
 import { BasicBlock } from '@core/components/BasicBlock';
 
-export default function createMyCustomBlock(json: any) {
+export default function createCustomBlockManually(json: any) {
   const block = createBlock({
     get name() {
       return t(json.name);
@@ -30,3 +30,5 @@ export default function createMyCustomBlock(json: any) {
   const allBlocks = BlockManager.getBlocks();
   return block;
 }
+
+export const createMyCustomBlock = createCustomBlockManually;

@@ -5,17 +5,19 @@ import visualizer from 'rollup-plugin-visualizer';
 export default defineConfig({
   plugins: [
     process.env.ANALYZE === 'true' &&
-      visualizer({
-        open: true,
-        gzipSize: true,
-        brotliSize: true,
-      }),
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ].filter(Boolean) as any,
   resolve: {
     alias: {
       '@extensions': path.resolve('./src'),
       'easy-email-core': path.resolve('../easy-email-core/lib'),
       'easy-email-editor': path.resolve('../easy-email-editor/lib'),
+      "@": path.resolve("../easy-email-editor/src"),
+      "@/*": path.resolve("../easy-email-editor/src/*")
     },
   },
   define: {},

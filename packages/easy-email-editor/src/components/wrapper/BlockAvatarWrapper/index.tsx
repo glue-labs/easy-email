@@ -4,7 +4,7 @@ import { useHoverIdx } from '@/hooks/useHoverIdx';
 import { useDataTransfer } from '@/hooks/useDataTransfer';
 import { isUndefined } from 'lodash';
 import { useBlock } from '@/hooks/useBlock';
-import createMyCustomBlock from '@core/blocks/dummy';
+import { createMyCustomBlock } from 'easy-email-core';
 
 export type BlockAvatarWrapperProps = {
   children?: React.ReactNode;
