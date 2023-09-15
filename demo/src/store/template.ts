@@ -18,7 +18,7 @@ export function getAdaptor(data: IArticle): IEmailTemplate {
   };
 }
 
-export function getAdaptorV2(data: { content: string; subTitle: string; subject:string;}): IEmailTemplate {
+export function getAdaptorV2(data: { content: string; subTitle: string; subject: string; }): IEmailTemplate {
   // const content = JSON.parse(data) as IBlockData;
   return {
     content: data.content,
@@ -53,7 +53,7 @@ export default createSliceState({
           data = await component.getTemplateById(id);
         }
         console.log("data", data);
-        return getAdaptorV2(data.templateJson);
+        return getAdaptorV2({ content: data.templateMjml, subject: '', subTitle: '' });
       } catch (error) {
         history.replace('/');
         throw error;
