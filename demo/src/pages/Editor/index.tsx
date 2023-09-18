@@ -54,6 +54,7 @@ import {
 } from '@demo/utils/exportUtility';
 import { CustomBlocksType } from './components/CustomBlocks/constants';
 import defaultData from '@demo/store/defaultData';
+import Handlebars from 'handlebars';
 
 const imageCompression = import('browser-image-compression');
 
@@ -132,19 +133,19 @@ export default function Editor() {
 
   // Get Template Data By Doing API Call on Component mount
   useEffect(() => {
-    console.log("aayi kya id", id)
+    console.log("aayi kya id", id);
     if (id) {
       if (!userId) {
-        console.log("check 1")
+        console.log("check 1");
         // UserStorage.getAccount().then(account => {
-          dispatch(template.actions.fetchById({ id: +id }));
+        dispatch(template.actions.fetchById({ id: +id }));
         // });
       } else {
-        console.log("check 2")
+        console.log("check 2");
         dispatch(template.actions.fetchById({ id: +id }));
       }
     } else {
-      console.log("check 3")
+      console.log("check 3");
       dispatch(template.actions.fetchDefaultTemplate(undefined));
     }
 
@@ -162,6 +163,7 @@ export default function Editor() {
     });
   }, [mergeTagData]);
 
+
   // Compress Image & Upload
   const onUploadImage = async (blob: Blob) => {
     const compressionFile = await (
@@ -169,7 +171,9 @@ export default function Editor() {
     ).default(blob as File, {
       maxWidthOrHeight: 1440,
     });
-    return services.common.uploadByQiniu(compressionFile);
+    const url = await services.common.uploadByQiniu(compressionFile);
+
+    return url;
   };
 
   // Method to update merge tag value
@@ -254,9 +258,11 @@ export default function Editor() {
   // Method to do Preview with Injected Data
   const onBeforePreview: EmailEditorProviderProps['onBeforePreview'] = useCallback(
     (html: string, mergeTags) => {
-      const engine = new Liquid();
-      const tpl = engine.parse(html);
-      return engine.renderSync(tpl, mergeTags);
+      // const engine = new Liquid();
+      const e = Handlebars.compile(html);
+      const tpl = e(mergeTags);
+      // console.log("tpl value",tpl)
+      return tpl;
     },
     [],
   );

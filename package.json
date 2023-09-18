@@ -20,6 +20,7 @@
     "@types/file-saver": "^2.0.5",
     "easy-localized-translation": "^1.1.0",
     "file-saver": "^2.0.5",
+    "handlebars": "^4.7.8",
     "lerna": "^4.0.0",
     "liquidjs": "^9.34.1"
   },

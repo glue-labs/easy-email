@@ -42,7 +42,7 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                   inline
                 />
               )}
-              {/* <InputWithUnitField
+              <InputWithUnitField
                 label={t('Width')}
                 name={`${focusIdx}.attributes.width`}
                 inline
@@ -54,7 +54,7 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                 )}
                 name={`${focusIdx}.data.value.breakpoint`}
                 inline
-              /> */}
+              />
             </Space>
           </Collapse.Item>
           <Collapse.Item

@@ -1,12 +1,15 @@
 import { useEditorProps } from 'easy-email-editor';
-import { Button, Form, FormInstance, Input, Space } from '@arco-design/web-react';
+import { Button, Form, FormInstance, Input, Message, Space, Upload } from '@arco-design/web-react';
 import { IconDelete, IconPlus, IconSave } from '@arco-design/web-react/icon';
-import { useExtensionProps } from '@extensions';
+import { ImageUploaderField, TextField, Width, useExtensionProps } from '@extensions';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { get } from 'lodash';
+import FormItem from '@arco-design/web-react/es/Form/form-item';
 
 export function DataPanel() {
   const { setMergeTags, mergeTags } = useEditorProps();
   const { updateDefaultData, mergeTagData } = useExtensionProps();
+  const { onUploadImage } = useEditorProps();
   const formRef = useRef<FormInstance>(null);
   const [initialValues, setInitialValues] = useState({ tagData: [] });
 
@@ -22,6 +25,19 @@ export function DataPanel() {
     };
     setInitialValues(newValues);
   }, [mergeTags]);
+
+
+  function uploadImage(blob: Blob, key: string) {
+    console.log(key, 'KEU');
+    let val = onUploadImage && onUploadImage(blob);
+
+    const newObject = { ...mergeTags };
+    newObject[key] = val;
+
+    setMergeTags && setMergeTags(newObject);
+    return val;
+  }
+  console.log(uploadImage, "SFEWVW");
 
   return (
     <div style={{ padding: 0 }}>
@@ -50,10 +66,44 @@ export function DataPanel() {
         }}
       >
         <Form.List field='tagData'>
-          {(fields, { add, remove, move }) => {
+          {(fields, { add, remove, move }, ...rest) => {
             return (
               <div>
                 {fields.map((item, index) => {
+                  if (get(initialValues, item.field + '.key') === 'productLogo') {
+                    return (
+                      <div key={item.key}>
+                        <Space style={{ padding: 10 }}>
+                          <Form.Item
+                            field={item.field + '.key'}
+                            rules={[{ required: true }]}
+                            noStyle
+                            label={item.field + '.key'}
+                          >
+                            <Input readOnly style={{ color: "black", cursor: "no-drop" }} />
+                          </Form.Item>
+                          <Form.Item
+                            field={item.field + '.value'}
+                            rules={[{ required: true }]}
+
+                            noStyle
+                          >
+                            <Input />
+
+                          </Form.Item>
+
+                        </Space>
+
+                        <ImageUploaderField
+                          label={t('src')}
+                          labelHidden
+                          name='imageUploader'
+                          uploadHandler={(blob) => uploadImage(blob, get(initialValues, item.field + '.key'))}
+                        />
+
+                      </div>
+                    );
+                  }
                   return (
                     <div key={item.key}>
                       <Space style={{ padding: 10 }}>
@@ -62,7 +112,7 @@ export function DataPanel() {
                           rules={[{ required: true }]}
                           noStyle
                         >
-                          <Input />
+                          <Input readOnly style={{ color: "black", cursor: "no-drop" }} />
                         </Form.Item>
                         <Form.Item
                           field={item.field + '.value'}
@@ -71,26 +121,18 @@ export function DataPanel() {
                         >
                           <Input />
                         </Form.Item>
-                        {/* <Button
-                          icon={<IconDelete />}
-                          shape='circle'
-                          status='danger'
-                          onClick={() => remove(index)}
-                        /> */}
                       </Space>
                     </div>
                   );
                 })}
-                <Form.Item style={{ padding: 10 }}>
+                {/* <Form.Item style={{ padding: 10 }}>
                   <Space size={20}>
 
-                    {/* <Button
-                      type='primary'
-                      icon={<IconPlus />}
-                      onClick={() => {
-                        add();
-                      }}
-                    /> */}
+                  </Space>
+                </Form.Item> */}
+
+                <Form.Item style={{ padding: 10 }}>
+                  <Space >
                     <Button
                       icon={<IconSave />}
                       type='primary'
@@ -99,9 +141,7 @@ export function DataPanel() {
                       Save Data
                     </Button>
                   </Space>
-
                 </Form.Item>
-
               </div>
             );
           }}
