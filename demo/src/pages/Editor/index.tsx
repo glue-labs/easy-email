@@ -32,6 +32,7 @@ import { IBlockData } from 'easy-email-core';
 import {
   BlockMarketManager,
   ExtensionProps,
+  MjmlToJson,
   StandardLayout,
 } from 'easy-email-extensions';
 import { AutoSaveAndRestoreEmail } from '@demo/components/AutoSaveAndRestoreEmail';
@@ -185,15 +186,14 @@ export default function Editor() {
     });
   }, []);
 
-
-
   // Load Template Data into the Editor
   const initialValues: IEmailTemplate | null = useMemo(() => {
     if (!templateData) return null;
     const sourceData = cloneDeep(templateData.content) as IBlockData;
+
     return {
       ...templateData,
-      content: sourceData, // replace standard block
+      content: MjmlToJson(sourceData), // replace standard block
     };
   }, [templateData]);
 

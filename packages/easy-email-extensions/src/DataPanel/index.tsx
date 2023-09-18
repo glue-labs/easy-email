@@ -15,7 +15,7 @@ export function DataPanel() {
 
   useMemo(() => {
     const newValues = {
-      tagData: mergeTagData?.mutableKeys.map((k: string) => {
+      tagData: mergeTagData?.mutableKeys?.map((k: string) => {
         return {
           key: k,
           value: mergeTags && mergeTags[k]
