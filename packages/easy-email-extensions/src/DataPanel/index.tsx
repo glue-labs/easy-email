@@ -1,10 +1,9 @@
 import { useEditorProps } from 'easy-email-editor';
-import { Button, Form, FormInstance, Input, Message, Space, Upload } from '@arco-design/web-react';
-import { IconDelete, IconPlus, IconSave } from '@arco-design/web-react/icon';
-import { ImageUploaderField, TextField, Width, useExtensionProps } from '@extensions';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Button, Form, FormInstance, Input, Space } from '@arco-design/web-react';
+import { IconSave } from '@arco-design/web-react/icon';
+import { ImageUploaderField, useExtensionProps } from '@extensions';
+import React, { useMemo, useRef, useState } from 'react';
 import { get } from 'lodash';
-import FormItem from '@arco-design/web-react/es/Form/form-item';
 
 export function DataPanel() {
   const { setMergeTags, mergeTags } = useEditorProps();
@@ -21,15 +20,21 @@ export function DataPanel() {
           value: mergeTags && mergeTags[k]
         };
       }),
-
     };
+
+    if (mergeTagData?.mutableKeys) {
+      formRef?.current?.setFieldsValue(newValues);
+    }
     setInitialValues(newValues);
   }, [mergeTags]);
 
 
-  function uploadImage(blob: Blob, key: string) {
-    console.log(key, 'KEU');
-    let val = onUploadImage && onUploadImage(blob);
+  async function uploadImage(blob: Blob, key: string) {
+    if (!onUploadImage) {
+      return 'Failed';
+    }
+
+    let val = await onUploadImage(blob);
 
     const newObject = { ...mergeTags };
     newObject[key] = val;
@@ -37,7 +42,6 @@ export function DataPanel() {
     setMergeTags && setMergeTags(newObject);
     return val;
   }
-  console.log(uploadImage, "SFEWVW");
 
   return (
     <div style={{ padding: 0 }}>
@@ -85,13 +89,10 @@ export function DataPanel() {
                           <Form.Item
                             field={item.field + '.value'}
                             rules={[{ required: true }]}
-
                             noStyle
                           >
                             <Input />
-
                           </Form.Item>
-
                         </Space>
 
                         <ImageUploaderField
@@ -100,7 +101,6 @@ export function DataPanel() {
                           name='imageUploader'
                           uploadHandler={(blob) => uploadImage(blob, get(initialValues, item.field + '.key'))}
                         />
-
                       </div>
                     );
                   }
@@ -125,12 +125,6 @@ export function DataPanel() {
                     </div>
                   );
                 })}
-                {/* <Form.Item style={{ padding: 10 }}>
-                  <Space size={20}>
-
-                  </Space>
-                </Form.Item> */}
-
                 <Form.Item style={{ padding: 10 }}>
                   <Space >
                     <Button

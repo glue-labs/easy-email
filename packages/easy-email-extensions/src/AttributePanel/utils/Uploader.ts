@@ -28,7 +28,7 @@ type UploaderEventMapHandle = {
   [K in keyof UploaderEventMap]: UploaderEventMap[K][];
 };
 
-export type UploaderServer = (file: File) => Promise<string> | undefined;
+export type UploaderServer = (file: File) => Promise<string>;
 
 export class Uploader {
   private options: UploaderOption;
