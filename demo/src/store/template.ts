@@ -47,13 +47,15 @@ export default createSliceState({
     ) => {
       try {
         let data = await getTemplate(id);
-        console.log("before data", data);
         if (!data) {
-          console.log("if ke andr", id);
           data = await component.getTemplateById(id);
         }
-        console.log("data", data);
-        return getAdaptorV2({ content: data.templateMjml, subject: '', subTitle: '' });
+        return {
+          content: data.templateMjml,
+          subject: '',
+          subTitle: '',
+          defaultData: data.defaultData
+        };
       } catch (error) {
         history.replace('/');
         throw error;

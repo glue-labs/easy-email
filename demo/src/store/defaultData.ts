@@ -5,7 +5,7 @@ import { IBlockData } from 'easy-email-core';
 export default createSliceState({
   name: 'defaultData',
   initialState: [] as Record<string, any>,
-  reducers:  {
+  reducers: {
     set: (state, action) => {
       return action.payload;
     },

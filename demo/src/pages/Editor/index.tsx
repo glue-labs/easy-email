@@ -11,10 +11,9 @@ import {
 } from '@arco-design/web-react';
 import { useQuery } from '@demo/hooks/useQuery';
 import { useHistory } from 'react-router-dom';
-import { cloneDeep, set, isEqual, get } from 'lodash';
+import { cloneDeep, set, isEqual, get, merge } from 'lodash';
 import { Loading } from '@demo/components/loading';
 import services from '@demo/services';
-import { Liquid } from 'liquidjs';
 import {
   EmailEditor,
   EmailEditorProvider,
@@ -25,7 +24,6 @@ import {
 import { Stack } from '@demo/components/Stack';
 import { pushEvent } from '@demo/utils/pushEvent';
 import { FormApi } from 'final-form';
-import { UserStorage } from '@demo/utils/user-storage';
 
 import { useCollection } from './components/useCollection';
 import { IBlockData } from 'easy-email-core';
@@ -53,7 +51,6 @@ import {
   onExportJSON,
   onExportMJML
 } from '@demo/utils/exportUtility';
-import { CustomBlocksType } from './components/CustomBlocks/constants';
 import defaultData from '@demo/store/defaultData';
 import Handlebars from 'handlebars';
 
@@ -64,20 +61,7 @@ export default function Editor() {
     {
       label: 'Content',
       active: true,
-      blocks: [
-        // {
-        //   type: CustomBlocksType.TOPBAR_3,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_4,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_5,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_6,
-        // }
-      ],
+      blocks: [],
     }
   ];
 
@@ -134,19 +118,9 @@ export default function Editor() {
 
   // Get Template Data By Doing API Call on Component mount
   useEffect(() => {
-    console.log("aayi kya id", id);
     if (id) {
-      if (!userId) {
-        console.log("check 1");
-        // UserStorage.getAccount().then(account => {
-        dispatch(template.actions.fetchById({ id: +id }));
-        // });
-      } else {
-        console.log("check 2");
-        dispatch(template.actions.fetchById({ id: +id }));
-      }
+      dispatch(template.actions.fetchById({ id }));
     } else {
-      console.log("check 3");
       dispatch(template.actions.fetchDefaultTemplate(undefined));
     }
 
@@ -158,12 +132,12 @@ export default function Editor() {
   // Update merge tags keys
   useEffect(() => {
     if (!mergeTagData || !Object.keys(mergeTagData).length) return;
+    console.log(mergeTagData, 'SDDD');
     setMergeTags({
-      ...mergeTagData.fields,
-      mutableKeys: mergeTagData.mutableKeys
+      ...mergeTags,
+      ...mergeTagData,
     });
   }, [mergeTagData]);
-
 
   // Compress Image & Upload
   const onUploadImage = async (blob: Blob) => {
@@ -190,6 +164,8 @@ export default function Editor() {
   const initialValues: IEmailTemplate | null = useMemo(() => {
     if (!templateData) return null;
     const sourceData = cloneDeep(templateData.content) as IBlockData;
+
+    setMergeTags(templateData.defaultData);
 
     return {
       ...templateData,
@@ -260,8 +236,12 @@ export default function Editor() {
     (html: string, mergeTags) => {
       // const engine = new Liquid();
       const e = Handlebars.compile(html);
-      const tpl = e(mergeTags);
-      // console.log("tpl value",tpl)
+      let sanitizedObj = {};
+      Object.keys(mergeTags).map(tag => {
+        sanitizedObj[tag] = mergeTags[tag].value;
+      });
+
+      const tpl = e(sanitizedObj);
       return tpl;
     },
     [],
@@ -273,12 +253,10 @@ export default function Editor() {
     const val2 = onExportMJML(values, mergeTags);
     // const val3 = await onExportImage(values, mergeTags);
 
-    dispatch(component.actions.update({
-      id: '1313',
-      data: {
-        templateMjml: val2,
-        templateJson: val1,
-      }
+    dispatch(component.actions.create({
+      templateId: id,
+      contentData: mergeTags,
+      organisationId: 'xg_id_12'
     }));
   };
 

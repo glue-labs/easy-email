@@ -33,7 +33,6 @@ export const component = {
   },
 
   async getTemplateById(id: number | string): Promise<any> {
-    console.log(id,"iddd")
     return request.get<string>(`/templates/${id}`);
   },
 
@@ -65,6 +64,25 @@ export const component = {
       ...data,
     });
   },
+  async createTemplate(
+    data: {
+      templateHtml?: any;
+      templateMjml?: any;
+      templateJson?: ITemplateJson;
+      attributeJson?: IAttributeJson;
+      organisationId: string;
+      contentData: Record<string, any>;
+      templateId: string;
+    }
+  ): Promise<IComponent> {
+    return request.post<IComponent>('/templates', {
+      ...data
+    }, {
+      headers: {
+        'content-type': 'application/json'
+      }
+    });
+  },
   async updateTemplate(
     id: number,
     data: {
@@ -87,7 +105,7 @@ export const component = {
   async getTemplateData(
     id: number
   ): Promise<any> {
-    let req = await request.get<string>('/default-data/' + id);
+    let req = await request.get<string>('/templates/default-meta?organisationId' + id);
     return req;
   }
 };

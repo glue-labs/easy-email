@@ -24,13 +24,18 @@ export default createSliceState({
   },
   effects: {
     fetch: async (state, { categoryId }) => {
+      return [];
+
       const data = await component.getComponentList({
         categoryId,
       });
 
       return data;
     },
-
+    create: async (stat, data) => {
+      console.log(data, 'DATA');
+      const res = await component.createTemplate(data);
+    },
     update: async (state, { id, data }) => {
       const res = await component.updateTemplate(id, {
         ...data,

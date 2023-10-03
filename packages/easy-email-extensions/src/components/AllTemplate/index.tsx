@@ -4,20 +4,30 @@ import React from 'react';
 import { useForm } from 'react-final-form';
 import { useExtensionProps } from '../Providers/ExtensionProvider';
 import { MjmlToJson } from '@extensions/utils/MjmlToJson';
+import { useEditorProps } from '@';
 
 export const TemplateUi = () => {
-  const { templates, updateDefaultData } = useExtensionProps();
+  const { templates } = useExtensionProps();
+  const { setMergeTags, mergeTags } = useEditorProps();
+
   const form = useForm();
 
-  const onSubmit = (mjml: string, id: number) => {
-    const content = MjmlToJson(mjml);
-    console.log('Content', content);
+  const onSubmit = (card: {
+    templateMjml: string;
+    templateId: string;
+    defaultData: Record<string, any>;
+  }) => {
+    const content = MjmlToJson(card.templateMjml);
     form.restart({
       subject: '',
       content,
       subtitle: ''
     });
-    updateDefaultData && updateDefaultData(+id);
+
+    setMergeTags && setMergeTags({
+      ...mergeTags,
+      ...card?.defaultData?.fields,
+    });
   };
 
   return (
@@ -45,7 +55,7 @@ export const TemplateUi = () => {
                   key={index}
                 />
                 <br />
-                <Button onClick={() => onSubmit(card.templateMjml, card.id)}>Use This Template
+                <Button onClick={() => onSubmit(card)}>Use This Template
                 </Button>
               </Card>
               <Divider style={{ border: '5px solid rgb(var(--gray-3))' }} />
