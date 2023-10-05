@@ -11,7 +11,7 @@ import { PresetColorsProvider } from './components/provider/PresetColorsProvider
 import ReactDOM from 'react-dom';
 import { BlockAttributeConfigurationManager } from './utils/BlockAttributeConfigurationManager';
 import { SelectionRangeProvider } from './components/provider/SelectionRangeProvider';
-import { BasicType, getParentByIdx } from '@core';
+// import { BasicType, getParentByIdx } from '@core';
 
 export interface AttributePanelProps { }
 
@@ -25,7 +25,7 @@ export function AttributePanel() {
 
   const shadowRoot = getShadowRoot();
 
-  if (!initialized) return null;
+  // if (!initialized) return null;
 
   return (
     <SelectionRangeProvider>

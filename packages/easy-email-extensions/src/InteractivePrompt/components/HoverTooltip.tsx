@@ -99,7 +99,7 @@ function TipNode(props: TipNodeProps) {
       return `${t('Insert after')} ${title}`;
     } else if (direction === 'right' || direction === 'left') {
       return t('Drag here');
-    }    
+    }
     return `${t('Drag to')} ${title}`;
   }, [direction, title]);
 

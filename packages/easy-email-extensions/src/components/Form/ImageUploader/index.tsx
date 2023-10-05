@@ -23,6 +23,7 @@ export interface ImageUploaderProps {
   value: string;
   label: string;
   uploadHandler?: UploaderServer;
+  removeHandler?: () => void;
   autoCompleteOptions?: Array<{ value: string; label: React.ReactNode; }>;
 }
 
@@ -93,6 +94,9 @@ export function ImageUploader(props: ImageUploaderProps) {
 
   const onRemove = useCallback(() => {
     props.onChange('');
+    if (props.removeHandler) {
+      props.removeHandler();
+    }
   }, [props]);
 
   const content = useMemo(() => {
@@ -117,13 +121,13 @@ export function ImageUploader(props: ImageUploaderProps) {
     }
 
     return (
-      <div className={styles['item']}>
+      <div className={styles['item']} style={{ border: '1px solid grey' }}>
         <div className={classnames(styles['info'])}>
           <img src={props.value} />
           <div className={styles['btn-wrap']}>
-            <a title={t('Preview')} onClick={() => setPreview(true)}>
+            {/* <a title={t('Preview')} onClick={() => setPreview(true)}>
               <IconEye />
-            </a>
+            </a> */}
             <a title={t('Remove')} onClick={() => onRemove()}>
               <IconDelete />
             </a>
@@ -138,26 +142,26 @@ export function ImageUploader(props: ImageUploaderProps) {
   }
 
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} >
       <div className={styles['container']}>
         {content}
-        <Grid.Row style={{ width: '100%' }}>
-          {mergeTags && (
+        <Grid.Row>
+          {/* {mergeTags && (
             <Popover
               trigger='click'
               content={<MergeTags value={props.value} onChange={onChange} />}
             >
               <ArcoButton icon={<IconFont iconName='icon-merge-tags' />} />
             </Popover>
-          )}
-          <Input
+          )} */}
+          {/* <Input
             style={{ flex: 1 }}
             onPaste={onPaste}
             value={props.value}
             onChange={onChange}
             disabled={isUploading}
 
-          />
+          /> */}
           {props.autoCompleteOptions && (
             <Dropdown
               position="tr"

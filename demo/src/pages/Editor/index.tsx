@@ -11,10 +11,9 @@ import {
 } from '@arco-design/web-react';
 import { useQuery } from '@demo/hooks/useQuery';
 import { useHistory } from 'react-router-dom';
-import { cloneDeep, set, isEqual, get } from 'lodash';
+import { cloneDeep, set, isEqual, get, merge } from 'lodash';
 import { Loading } from '@demo/components/loading';
 import services from '@demo/services';
-import { Liquid } from 'liquidjs';
 import {
   EmailEditor,
   EmailEditorProvider,
@@ -25,13 +24,13 @@ import {
 import { Stack } from '@demo/components/Stack';
 import { pushEvent } from '@demo/utils/pushEvent';
 import { FormApi } from 'final-form';
-import { UserStorage } from '@demo/utils/user-storage';
 
 import { useCollection } from './components/useCollection';
 import { IBlockData } from 'easy-email-core';
 import {
   BlockMarketManager,
   ExtensionProps,
+  MjmlToJson,
   StandardLayout,
 } from 'easy-email-extensions';
 import { AutoSaveAndRestoreEmail } from '@demo/components/AutoSaveAndRestoreEmail';
@@ -47,12 +46,13 @@ import { IconSave } from '@arco-design/web-react/icon';
 import component from '@demo/store/component';
 import templateList from '@demo/store/templateList';
 import {
-  onExportHTML,
-  onExportImage,
+  // onExportHTML,
+  // onExportImage,
   onExportJSON,
   onExportMJML
 } from '@demo/utils/exportUtility';
-import { CustomBlocksType } from './components/CustomBlocks/constants';
+import defaultData from '@demo/store/defaultData';
+import Handlebars from 'handlebars';
 
 const imageCompression = import('browser-image-compression');
 
@@ -61,20 +61,7 @@ export default function Editor() {
     {
       label: 'Content',
       active: true,
-      blocks: [
-        // {
-        //   type: CustomBlocksType.TOPBAR_3,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_4,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_5,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_6,
-        // }
-      ],
+      blocks: [],
     }
   ];
 
@@ -92,7 +79,7 @@ export default function Editor() {
 
   const smallScene = width < 1400;
 
-  const { id, userId } = useQuery();
+  let { id, userId } = useQuery();
   const loading = useLoading(template.loadings.fetchById);
   const {
     mergeTags,
@@ -111,6 +98,15 @@ export default function Editor() {
     dispatch(templateList.actions.fetch(undefined));
   }, [dispatch]);
 
+  const mergeTagData = useAppSelector('defaultData');
+  useEffect(() => {
+    dispatch(defaultData.actions.fetchById(id));
+  }, [dispatch]);
+
+  const updateDefaultData = (id: string) => {
+    dispatch(defaultData.actions.fetchById(+id));
+  };
+
   useEffect(() => {
     if (collectionCategory) {
       BlockMarketManager.addCategories([collectionCategory]);
@@ -123,13 +119,7 @@ export default function Editor() {
   // Get Template Data By Doing API Call on Component mount
   useEffect(() => {
     if (id) {
-      if (!userId) {
-        UserStorage.getAccount().then(account => {
-          dispatch(template.actions.fetchById({ id: +id, userId: account.user_id }));
-        });
-      } else {
-        dispatch(template.actions.fetchById({ id: +id, userId: +userId }));
-      }
+      dispatch(template.actions.fetchById({ id }));
     } else {
       dispatch(template.actions.fetchDefaultTemplate(undefined));
     }
@@ -139,6 +129,16 @@ export default function Editor() {
     };
   }, [dispatch, id, userId]);
 
+  // Update merge tags keys
+  useEffect(() => {
+    if (!mergeTagData || !Object.keys(mergeTagData).length) return;
+    console.log(mergeTagData, 'SDDD');
+    setMergeTags({
+      ...mergeTags,
+      ...mergeTagData,
+    });
+  }, [mergeTagData]);
+
   // Compress Image & Upload
   const onUploadImage = async (blob: Blob) => {
     const compressionFile = await (
@@ -146,7 +146,9 @@ export default function Editor() {
     ).default(blob as File, {
       maxWidthOrHeight: 1440,
     });
-    return services.common.uploadByQiniu(compressionFile);
+    const url = await services.common.uploadByQiniu(compressionFile);
+
+    return url;
   };
 
   // Method to update merge tag value
@@ -162,9 +164,12 @@ export default function Editor() {
   const initialValues: IEmailTemplate | null = useMemo(() => {
     if (!templateData) return null;
     const sourceData = cloneDeep(templateData.content) as IBlockData;
+
+    setMergeTags(templateData.defaultData);
+
     return {
       ...templateData,
-      content: sourceData, // replace standard block
+      content: MjmlToJson(sourceData), // replace standard block
     };
   }, [templateData]);
 
@@ -212,11 +217,12 @@ export default function Editor() {
       } else {
         dispatch(
           template.actions.create({
+            id: 2,
             template: values,
             success(id, newTemplate) {
               Message.success('Saved success!');
               form.restart(newTemplate);
-              history.replace(`/editor?id=${id}`);
+              // history.replace(`/editor?id=${id}`);
             },
           }),
         );
@@ -228,31 +234,30 @@ export default function Editor() {
   // Method to do Preview with Injected Data
   const onBeforePreview: EmailEditorProviderProps['onBeforePreview'] = useCallback(
     (html: string, mergeTags) => {
-      const engine = new Liquid();
-      const tpl = engine.parse(html);
-      return engine.renderSync(tpl, mergeTags);
+      // const engine = new Liquid();
+      const e = Handlebars.compile(html);
+      let sanitizedObj = {};
+      Object.keys(mergeTags).map(tag => {
+        sanitizedObj[tag] = mergeTags[tag].value;
+      });
+
+      const tpl = e(sanitizedObj);
+      return tpl;
     },
     [],
   );
 
   const saveMyTemplate = async (values: IEmailTemplate) => {
     const val1 = onExportJSON(values);
-    console.log(val1);
-    const val = onExportHTML(values, mergeTags);
-    console.log(val);
+    // const val = onExportHTML(values, mergeTags);
     const val2 = onExportMJML(values, mergeTags);
-    console.log(val2);
-    const val3 = await onExportImage(values, mergeTags);
-    console.log(val3);
+    // const val3 = await onExportImage(values, mergeTags);
 
-    // dispatch(component.actions.update({
-    //   id: '1313',
-    //   data: {
-    //     templateMjml: val2,
-    //     templateJson: val1,
-    //     templateHtml: val,
-    //   }
-    // }));
+    dispatch(component.actions.create({
+      templateId: id,
+      contentData: mergeTags,
+      organisationId: 'xg_id_12'
+    }));
   };
 
   if (!templateData && loading && !categories.length) {
@@ -290,8 +295,13 @@ export default function Editor() {
                 <PageHeader
                   style={{ background: 'var(--color-bg-2)' }}
                   backIcon
-                  title='Back'
-                  onBack={() => history.push('/')}
+                  title='Go Back To xG'
+                  onBack={() => {
+                    if (window.confirm('Are you sure you want to go back?')) {
+                      // Perform the navigation here
+                      history.push('/');
+                    }
+                  }}
                   extra={
                     <Stack alignment='center'>
                       <Button
@@ -308,6 +318,8 @@ export default function Editor() {
                   categories={categories}
                   changeCategories={changeCategories}
                   templates={templates}
+                  mergeTagData={mergeTagData}
+                  updateDefaultData={updateDefaultData}
                 >
                   <EmailEditor />
                 </StandardLayout>

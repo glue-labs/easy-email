@@ -48,6 +48,8 @@ export interface PropsProviderProps {
   ) => string | Promise<string>;
   enabledLogic?: boolean;
   locale?: Record<string, string>;
+  updateDefaultData?: (id: string) => any;
+  mergeTagData?: Record<string, any>;
 }
 
 const defaultMergeTagGenerate = (m: string) => `{{${m}}}`;

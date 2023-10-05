@@ -1,18 +1,33 @@
-import { IEmailTemplate } from '@';
 import { Button, Card, Divider } from '@arco-design/web-react';
 import Meta from '@arco-design/web-react/es/Card/meta';
-import { cards } from '@extensions/utils/templates';
 import React from 'react';
 import { useForm } from 'react-final-form';
 import { useExtensionProps } from '../Providers/ExtensionProvider';
+import { MjmlToJson } from '@extensions/utils/MjmlToJson';
+import { useEditorProps } from '@';
 
 export const TemplateUi = () => {
   const { templates } = useExtensionProps();
-  console.log(templates, 'TEMPLATES');
+  const { setMergeTags, mergeTags } = useEditorProps();
+
   const form = useForm();
 
-  const onSubmit = (values: IEmailTemplate) => {
-    form.restart(values);
+  const onSubmit = (card: {
+    templateMjml: string;
+    templateId: string;
+    defaultData: Record<string, any>;
+  }) => {
+    const content = MjmlToJson(card.templateMjml);
+    form.restart({
+      subject: '',
+      content,
+      subtitle: ''
+    });
+
+    setMergeTags && setMergeTags({
+      ...mergeTags,
+      ...card?.defaultData?.fields,
+    });
   };
 
   return (
@@ -40,7 +55,7 @@ export const TemplateUi = () => {
                   key={index}
                 />
                 <br />
-                <Button onClick={() => onSubmit(card.templateJson)}>Use This Template
+                <Button onClick={() => onSubmit(card)}>Use This Template
                 </Button>
               </Card>
               <Divider style={{ border: '5px solid rgb(var(--gray-3))' }} />

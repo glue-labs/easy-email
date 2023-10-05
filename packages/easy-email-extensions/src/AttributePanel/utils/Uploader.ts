@@ -103,7 +103,7 @@ export class Uploader {
     this.handler.end.map((fn) => fn(uploadList));
   }
 
-  private async uploadFile(result: { file: File }) {
+  private async uploadFile(result: { file: File; }) {
     return this.uploadServer(result.file);
   }
 

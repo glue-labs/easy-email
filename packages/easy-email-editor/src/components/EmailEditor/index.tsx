@@ -55,7 +55,7 @@ export const EmailEditor = () => {
           tabBarExtraContent={<ToolsPanel />}
           titlePanelContent={<HeaderPanel />}
         >
-          <TabPane
+          {/* <TabPane
             style={{ height: 'calc(100% - 50px)' }}
             tab={(
               <Stack spacing='tight'>
@@ -65,7 +65,7 @@ export const EmailEditor = () => {
             key={ActiveTabKeys.EDIT}
           >
             <EditEmailPreview />
-          </TabPane>
+          </TabPane> */}
           <TabPane
             style={{ height: 'calc(100% - 50px)' }}
             tab={(

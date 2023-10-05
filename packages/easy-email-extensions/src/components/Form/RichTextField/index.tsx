@@ -23,7 +23,6 @@ export const RichTextField = (
   const [contentEditableType, setContentEditableType] = useState<string | null>(
     CONTENT_EDITABLE_CLASS_NAME
   );
-  console.log(contentEditableName, 'DD', contentEditableType);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -60,8 +59,6 @@ export const RichTextField = (
       } else {
         const idxName = activeElement.getAttribute(DATA_CONTENT_EDITABLE_IDX);
         const type = activeElement.getAttribute(DATA_CONTENT_EDITABLE_TYPE);
-        console.log(idxName, 'idxName', type);
-
         setContentEditableType(type);
         if (idxName) {
           setContentEditableName(idxName);

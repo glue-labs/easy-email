@@ -96,7 +96,6 @@ export function BlockTree<T extends TreeNode<T>>(props: BlockTreeProps<T>) {
 
   const onDragStart = useCallback(
     (e: React.DragEvent<HTMLSpanElement>, node: NodeInstance) => {
-      console.log('DDFF', e.dataTransfer);
       e.dataTransfer.dropEffect = 'none';
       // e.dataTransfer.setDragImage(img, 0, 0);
       const dragNodeData = (node.props as any).dataRef as T;
@@ -143,7 +142,6 @@ export function BlockTree<T extends TreeNode<T>>(props: BlockTreeProps<T>) {
       dropNode: NodeInstance | null;
       dropPosition: number;
     }) => {
-      console.log('DDD', info);
       const { dropNode, dropPosition, e } = info;
       e.dataTransfer.dropEffect = 'move';
       if (!dragNode.current || !dropNode) return;

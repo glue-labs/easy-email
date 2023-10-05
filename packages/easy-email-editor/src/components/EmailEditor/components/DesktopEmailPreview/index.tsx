@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useActiveTab } from '@/hooks/useActiveTab';
 import { ActiveTabKeys } from '@/components/Provider/BlocksProvider';
 import { usePreviewEmail } from '@/hooks/usePreviewEmail';
@@ -7,6 +7,9 @@ import { SyncScrollShadowDom } from '@/components/UI/SyncScrollShadowDom';
 import { classnames } from '@/utils/classnames';
 import { SYNC_SCROLL_ELEMENT_CLASS_NAME } from '@/constants';
 import { createPortal } from 'react-dom';
+import { useHotKeys } from '@/hooks/useHotKeys';
+import { useDropBlock } from '@/hooks/useDropBlock';
+import { MjmlDomRender } from '../EditEmailPreview/components/MjmlDomRender';
 
 export function DesktopEmailPreview() {
   const { activeTab } = useActiveTab();
@@ -73,6 +76,7 @@ export function DesktopEmailPreview() {
               boxSizing: 'border-box',
             }}
           >
+           
             <>{reactNode}</>
           </div>
           {createPortal(

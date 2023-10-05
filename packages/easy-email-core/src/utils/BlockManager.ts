@@ -1,6 +1,6 @@
 import { IBlock, IBlockData } from '@core/typings';
 import { standardBlocks, advancedBlocks } from '@core/blocks';
-import createMyCustomBlock from '@core/blocks/dummy';
+// import createMyCustomBlock from '@core/blocks/dummy';
 
 export class BlockManager {
   private static blocksMap: Record<string, IBlock> = {
@@ -53,9 +53,9 @@ export class BlockManager {
     type: string,
     json?: any
   ): IBlock<T> | undefined {
-    if (!this.blocksMap[type]) {
-      return createMyCustomBlock(json) as IBlock<any> as IBlock<T>;;
-    }
+    // if (!this.blocksMap[type]) {
+    //   return createMyCustomBlock(json) as IBlock<any> as IBlock<T>;;
+    // }
 
     return this.blocksMap[type] as IBlock<any> as IBlock<T>;
   }

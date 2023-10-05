@@ -1,4 +1,4 @@
-import { IconFont, useEditorProps } from '@';
+import { IconFont, useEditorProps } from 'easy-email-editor';
 import { Input as ArcoInput, InputProps as ArcoInputProps, Button, Grid, Popover } from '@arco-design/web-react';
 import React, { useCallback } from 'react';
 import { MergeTags } from '@extensions';
@@ -60,14 +60,14 @@ export function Input(props: InputProps) {
     <>
       <Grid.Row style={{ width: '100%' }}>
 
-        {mergeTags && (
+        {/* {mergeTags && (
           <Popover
             trigger='click'
             content={<MergeTags value={value} onChange={onChange} />}
           >
             <Button icon={<IconFont iconName='icon-merge-tags' />} />
           </Popover>
-        )}
+        )} */}
         <ArcoInput
           {...{ ...props, quickchange: undefined }}
           onChange={(value) => onChange(value)}

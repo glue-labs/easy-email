@@ -74,10 +74,10 @@ export const StandardLayout: React.FC<ExtensionProps> = props => {
     >
       <ConfigProvider locale={enUS}>
         <Card
-          style={{padding: 0 }}
-          bodyStyle= {{
+          style={{ padding: 0 }}
+          bodyStyle={{
             padding: 0,
-            height: containerHeight,
+            // height: containerHeight,
             overflow: 'hidden',
           }}
         >
@@ -89,22 +89,22 @@ export const StandardLayout: React.FC<ExtensionProps> = props => {
               overflow: 'hidden',
             }}
           >
-            {compact && (
+            {/* {compact && (
               <EditPanel
                 showSourceCode={showSourceCode}
                 jsonReadOnly={jsonReadOnly}
                 mjmlReadOnly={mjmlReadOnly}
               />
-            )}
-            <Layout style={{ height: containerHeight, flex: 1 }}>{props.children}</Layout>
-            {!compact && (
+            )} */}
+            <Layout style={{ flex: 1 }}>{props.children}</Layout>
+            {/* {!compact && (
               <EditPanel
                 showSourceCode={showSourceCode}
                 jsonReadOnly={jsonReadOnly}
                 mjmlReadOnly={mjmlReadOnly}
               />
-            )}
-            {compact ? (
+            )} */}
+            {/* {compact ? (
               <Layout.Sider
                 style={{
                   height: containerHeight,
@@ -117,11 +117,13 @@ export const StandardLayout: React.FC<ExtensionProps> = props => {
                   compact={compact}
                   height={containerHeight}
                   showSourceCode={showSourceCode}
+                  jsonReadOnly={jsonReadOnly}
+                  mjmlReadOnly={mjmlReadOnly}
                 />
               </Layout.Sider>
             ) : (
               <Layout.Sider style={{ width: 0, overflow: 'hidden' }} />
-            )}
+            )} */}
           </Layout>
         </Card>
         <InteractivePrompt />

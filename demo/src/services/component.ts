@@ -31,6 +31,11 @@ export const component = {
       },
     });
   },
+
+  async getTemplateById(id: number | string): Promise<any> {
+    return request.get<string>(`/templates/${id}`);
+  },
+
   async getTemplateList(): Promise<ITemplate[]> {
     return request.get<Array<ITemplate>>('/templates');
   },
@@ -59,6 +64,25 @@ export const component = {
       ...data,
     });
   },
+  async createTemplate(
+    data: {
+      templateHtml?: any;
+      templateMjml?: any;
+      templateJson?: ITemplateJson;
+      attributeJson?: IAttributeJson;
+      organisationId: string;
+      contentData: Record<string, any>;
+      templateId: string;
+    }
+  ): Promise<IComponent> {
+    return request.post<IComponent>('/templates', {
+      ...data
+    }, {
+      headers: {
+        'content-type': 'application/json'
+      }
+    });
+  },
   async updateTemplate(
     id: number,
     data: {
@@ -70,13 +94,20 @@ export const component = {
       userId: string;
     }
   ): Promise<IComponent> {
-    return request.put<IComponent>('/components/user/template/' + id, {
+    return request.put<IComponent>('/templates/save/' + id, {
       ...data,
     });
   },
   async deleteTemplate(id: number): Promise<string> {
     return request.delete('/components/user/template/' + id);
   },
+
+  async getTemplateData(
+    id: number
+  ): Promise<any> {
+    let req = await request.get<string>('/templates/default-meta?organisationId' + id);
+    return req;
+  }
 };
 
 export interface ListResponse<T> {
