@@ -11,7 +11,7 @@ import { PresetColorsProvider } from './components/provider/PresetColorsProvider
 import ReactDOM from 'react-dom';
 import { BlockAttributeConfigurationManager } from './utils/BlockAttributeConfigurationManager';
 import { SelectionRangeProvider } from './components/provider/SelectionRangeProvider';
-import { BasicType, getParentByIdx } from '@core';
+import { DefaultAttributePanel } from './components/blocks/dummy';
 
 export interface AttributePanelProps { }
 
@@ -26,18 +26,11 @@ export function AttributePanel() {
   const shadowRoot = getShadowRoot();
 
   if (!initialized) return null;
-
+  
   return (
     <SelectionRangeProvider>
       <PresetColorsProvider>
-        {Com ? (
-          <Com key={focusIdx} />
-        ) : (
-          <div style={{ marginTop: 200, padding: '0 50px' }}>
-            <TextStyle size='extraLarge'>{t('No matching components')}</TextStyle>
-          </div>
-        )}
-
+        <DefaultAttributePanel></DefaultAttributePanel>
         <div style={{ position: 'absolute' }}>
           <RichTextField idx={focusIdx} />
         </div>

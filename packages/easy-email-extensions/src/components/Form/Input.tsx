@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 import { MergeTags } from '@extensions';
 
 export interface InputProps extends Omit<ArcoInputProps, 'onChange'> {
+  showDataOptions?: boolean;
   quickchange?: boolean;
   value: string;
   onChange: (val: string) => void;
@@ -11,6 +12,7 @@ export interface InputProps extends Omit<ArcoInputProps, 'onChange'> {
 
 export function Input(props: InputProps) {
   const {
+    showDataOptions = false,
     quickchange,
     value = '',
     onKeyDown: onPropsKeyDown,
@@ -60,18 +62,18 @@ export function Input(props: InputProps) {
     <>
       <Grid.Row style={{ width: '100%' }}>
 
-        {mergeTags && (
-          <Popover
-            trigger='click'
-            content={<MergeTags value={value} onChange={onChange} />}
-          >
-            <Button icon={<IconFont iconName='icon-merge-tags' />} />
-          </Popover>
-        )}
         <ArcoInput
           {...{ ...props, quickchange: undefined }}
           onChange={(value) => onChange(value)}
           onKeyDown={onKeyDown}
+          addBefore= {showDataOptions && mergeTags && (
+            <Popover
+              trigger='click'
+              content={<MergeTags value={value} onChange={onChange} />}
+            >
+              <Button icon={<IconFont iconName='icon-merge-tags' />} />
+            </Popover>
+          )}
         />
       </Grid.Row>
 

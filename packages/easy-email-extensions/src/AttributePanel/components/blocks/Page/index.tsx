@@ -23,7 +23,7 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
     <AttributesPanelWrapper style={{ padding: 0 }}>
       <Stack.Item fill>
         <Collapse defaultActiveKey={['0', '1']}>
-          <Collapse.Item
+          {/* <Collapse.Item
             name='0'
             header={t('Email Setting')}
           >
@@ -56,7 +56,7 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                 inline
               />
             </Space>
-          </Collapse.Item>
+          </Collapse.Item> */}
           <Collapse.Item
             name='1'
             header={t('Theme Setting')}
@@ -127,14 +127,14 @@ export function Page({ hideSubTitle, hideSubject }: PageProps) {
                 />
               </Grid.Row>
 
-              <TextAreaField
+              {/* <TextAreaField
                 autoSize
                 label={t('User style')}
                 name={`${focusIdx}.data.value.user-style.content`}
-              />
+              /> */}
               <Stack.Item />
               <Stack.Item />
-              <AddFont />
+              {/* <AddFont /> */}
               <Stack.Item />
               <Stack.Item />
             </Stack>

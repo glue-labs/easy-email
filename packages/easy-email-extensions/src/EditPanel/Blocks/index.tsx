@@ -1,4 +1,4 @@
-import { Collapse, Grid, Select, Space, Typography } from '@arco-design/web-react';
+import { Card, Collapse, Grid, Select, Space, Typography } from '@arco-design/web-react';
 import { AdvancedType, BlockManager, IBlockData } from 'easy-email-core';
 import { BlockAvatarWrapper, IconFont } from 'easy-email-editor';
 import React, { useMemo, useState } from 'react';
@@ -97,30 +97,36 @@ function BlockItem({
   payload,
   title,
   json,
+  previewUrl,
   filterType,
 }: {
   type: string;
   payload?: Partial<IBlockData>;
   title?: string;
   filterType: string | undefined;
+  previewUrl: string | undefined;
   json: any;
 }) {
   const block = BlockManager.getBlockByType(type, json);
 
   return (
-    <div className={styles.blockItem}>
-      <BlockAvatarWrapper type={type} payload={payload} json={json}>
-        <div className={styles.blockItemContainer}>
-          <IconFont
-            style={{ fontSize: 20 }}
-            iconName={getIconNameByBlockType(type)}
-          />
-          <Typography.Text style={{ marginTop: 10 }}>
-            {title || block?.name}
-          </Typography.Text>
-        </div>
-      </BlockAvatarWrapper>
-    </div>
+    <BlockAvatarWrapper type={type} payload={payload} json={json}>
+      <Card
+        hoverable
+        style={{ width: 360, marginTop: 10 }}
+        title={title || block?.name}
+        cover={
+          <div style={{ height: 204, overflow: 'hidden' }}>
+            <img
+              src={previewUrl}
+              style={{ width: '100%', transform: 'translateY(-20px)' }}
+              alt={title || block?.name}
+            />
+          </div>
+        }
+      >
+      </Card>
+    </BlockAvatarWrapper>
   );
 }
 

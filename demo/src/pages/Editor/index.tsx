@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import template from '@demo/store/template';
 import { useAppSelector } from '@demo/hooks/useAppSelector';
 import { useLoading } from '@demo/hooks/useLoading';
 import {
@@ -25,7 +24,6 @@ import {
 import { Stack } from '@demo/components/Stack';
 import { pushEvent } from '@demo/utils/pushEvent';
 import { FormApi } from 'final-form';
-import { UserStorage } from '@demo/utils/user-storage';
 
 import { useCollection } from './components/useCollection';
 import { IBlockData } from 'easy-email-core';
@@ -45,14 +43,14 @@ import { useWindowSize } from 'react-use';
 import enUS from '@arco-design/web-react/es/locale/en-US';
 import { IconSave } from '@arco-design/web-react/icon';
 import component from '@demo/store/component';
-import templateList from '@demo/store/templateList';
 import {
   onExportHTML,
   onExportImage,
   onExportJSON,
   onExportMJML
 } from '@demo/utils/exportUtility';
-import { CustomBlocksType } from './components/CustomBlocks/constants';
+import template from '@demo/store/xg/template';
+import block from '@demo/store/xg/block';
 
 const imageCompression = import('browser-image-compression');
 
@@ -61,20 +59,7 @@ export default function Editor() {
     {
       label: 'Content',
       active: true,
-      blocks: [
-        // {
-        //   type: CustomBlocksType.TOPBAR_3,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_4,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_5,
-        // },
-        // {
-        //   type: CustomBlocksType.TOPBAR_6,
-        // }
-      ],
+      blocks: [],
     }
   ];
 
@@ -84,15 +69,15 @@ export default function Editor() {
     }));
   };
 
+  const { id } = useQuery();
   const dispatch = useDispatch();
   const history = useHistory();
-  const templateData = useAppSelector('template');
   const { collectionCategory } = useCollection();
-  const { width } = useWindowSize();
 
+  const { width } = useWindowSize();
   const smallScene = width < 1400;
 
-  const { id, userId } = useQuery();
+  const templateData = useAppSelector('template');
   const loading = useLoading(template.loadings.fetchById);
   const {
     mergeTags,
@@ -100,15 +85,9 @@ export default function Editor() {
   } = useMergeTagsModal(testMergeTags);
 
   // List Blocks
-  const list = useAppSelector('component');
+  const blocks = useAppSelector('block');
   useEffect(() => {
-    dispatch(component.actions.fetch({}));
-  }, [dispatch]);
-
-  // List Blocks
-  const templates = useAppSelector('templateList');
-  useEffect(() => {
-    dispatch(templateList.actions.fetch(undefined));
+    dispatch(block.actions.fetch({}));
   }, [dispatch]);
 
   useEffect(() => {
@@ -123,13 +102,7 @@ export default function Editor() {
   // Get Template Data By Doing API Call on Component mount
   useEffect(() => {
     if (id) {
-      if (!userId) {
-        UserStorage.getAccount().then(account => {
-          dispatch(template.actions.fetchById({ id: +id, userId: account.user_id }));
-        });
-      } else {
-        dispatch(template.actions.fetchById({ id: +id, userId: +userId }));
-      }
+      dispatch(template.actions.fetchById({ id }));
     } else {
       dispatch(template.actions.fetchDefaultTemplate(undefined));
     }
@@ -137,7 +110,7 @@ export default function Editor() {
     return () => {
       dispatch(template.actions.set(null));
     };
-  }, [dispatch, id, userId]);
+  }, [dispatch, id]);
 
   // Compress Image & Upload
   const onUploadImage = async (blob: Blob) => {
@@ -161,6 +134,7 @@ export default function Editor() {
   // Load Template Data into the Editor
   const initialValues: IEmailTemplate | null = useMemo(() => {
     if (!templateData) return null;
+    console.log('DHHD', templateData);
     const sourceData = cloneDeep(templateData.content) as IBlockData;
     return {
       ...templateData,
@@ -170,15 +144,18 @@ export default function Editor() {
 
   // Update the Json
   const categories = useMemo(() => {
-    if (!list) return [];
-    const newList = cloneDeep(list);
-    const filteredList = newList.map((l: any) => l.templateJson);
+    if (!blocks) return [];
+
+    const newList = cloneDeep(blocks);
+    const filteredList = newList.map((l: any) => JSON.parse(l.templateJson));
+
     defaultCategories[0].blocks = [
       ...defaultCategories[0].blocks,
       ...filteredList,
     ];
+
     return defaultCategories;
-  }, [list]);
+  }, [blocks]);
 
 
   const onSubmit = useCallback(
@@ -244,15 +221,6 @@ export default function Editor() {
     console.log(val2);
     const val3 = await onExportImage(values, mergeTags);
     console.log(val3);
-
-    // dispatch(component.actions.update({
-    //   id: '1313',
-    //   data: {
-    //     templateMjml: val2,
-    //     templateJson: val1,
-    //     templateHtml: val,
-    //   }
-    // }));
   };
 
   if (!templateData && loading && !categories.length) {
@@ -307,7 +275,6 @@ export default function Editor() {
                   compact={!smallScene}
                   categories={categories}
                   changeCategories={changeCategories}
-                  templates={templates}
                 >
                   <EmailEditor />
                 </StandardLayout>

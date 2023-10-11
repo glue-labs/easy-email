@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
 import user from './user';
-import template from './template';
-import templateList from './templateList';
+import template from './xg/template';
+import block from './xg/block';
 import extraBlocks from './extraBlocks';
 import toast from './common/toast';
 import loading from './common/loading';
@@ -12,7 +12,7 @@ import component from './component';
 const rootReducer = combineReducers({
   user: user.reducer,
   template: template.reducer,
-  templateList: templateList.reducer,
+  block: block.reducer,
   extraBlocks: extraBlocks.reducer,
   toast: toast.reducer,
   email: email.reducer,
