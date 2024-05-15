@@ -67,7 +67,7 @@ export function ConfigurationPanel({
         >
           <Tabs.TabPane
             title={
-              <div style={{ height: 40, lineHeight: '40px' }}>{t('Layers')}</div>
+              <div style={{ height: 40, lineHeight: '40px' }}>{t('Attributes')}</div>
             }
           >
             <FullHeightOverlayScrollbars height={`calc(${height} - 60px)`}>
